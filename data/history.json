@@ -1,0 +1,905 @@
+{
+ "source": "Cushman & Wakefield U.S. Industrial MarketBeat (national tables) and local MarketBeats (submarkets)",
+ "units": {
+  "rent": "overall asking rent, $/sf/yr",
+  "vac": "overall vacancy %",
+  "abs_q": "net absorption this quarter, sf",
+  "abs_ytd": "net absorption year to date, sf",
+  "del_ytd": "deliveries year to date, sf",
+  "inv": "inventory, sf",
+  "uc": "under construction, sf"
+ },
+ "quarters": [
+  "2024Q3",
+  "2024Q4",
+  "2025Q1",
+  "2025Q2",
+  "2025Q3",
+  "2025Q4",
+  "2026Q1",
+  "2026Q2"
+ ],
+ "metros": {
+  "la": {
+   "name_en": "Los Angeles",
+   "name_zh": "洛杉矶",
+   "partial_submarkets": false,
+   "series": {
+    "2024Q3": {
+     "rent": 17.26,
+     "vac": 4.8,
+     "abs_q": -3384155,
+     "del_ytd": 5108669,
+     "inv": 802696158,
+     "uc": 6000566
+    },
+    "2024Q4": {
+     "rent": 16.72,
+     "vac": 4.9,
+     "abs_q": -2135712,
+     "del_ytd": 6476716,
+     "inv": 803614359,
+     "uc": 5420730
+    },
+    "2025Q1": {
+     "rent": 16.4,
+     "vac": 4.9,
+     "abs_q": -729788,
+     "del_ytd": 1380614,
+     "inv": 804432068,
+     "uc": 4939310
+    },
+    "2025Q2": {
+     "rent": 16.1,
+     "vac": 4.8,
+     "abs_q": -1118053,
+     "del_ytd": 2425484,
+     "inv": 802684875,
+     "uc": 4543385
+    },
+    "2025Q3": {
+     "rent": 16.08,
+     "vac": 4.8,
+     "abs_q": 474742,
+     "del_ytd": 4009891,
+     "inv": 803857641,
+     "uc": 4008296
+    },
+    "2025Q4": {
+     "rent": 15.96,
+     "vac": 4.6,
+     "abs_q": -437789,
+     "del_ytd": 4562265,
+     "inv": 802058322,
+     "uc": 3840865
+    },
+    "2026Q1": {
+     "rent": 16.06,
+     "vac": 4.6,
+     "abs_q": -2173366,
+     "del_ytd": 352707,
+     "inv": 802544883,
+     "uc": 4354409
+    },
+    "2026Q2": {
+     "rent": 15.83,
+     "vac": 4.2,
+     "abs_q": 1233596,
+     "del_ytd": 761444,
+     "inv": 800488691,
+     "uc": 4433489,
+     "abs_ytd": 1760037
+    }
+   },
+   "submarkets": {
+    "2026Q2": [
+     {
+      "name": "LA South",
+      "inv": 192785851,
+      "vac": 4.5,
+      "abs_ytd": 2734389,
+      "uc": 1284389,
+      "rent": 16.44
+     },
+     {
+      "name": "San Gabriel Valley",
+      "inv": 159165425,
+      "vac": 2.9,
+      "abs_ytd": 221591,
+      "uc": 323744,
+      "rent": 17.28
+     },
+     {
+      "name": "LA West",
+      "inv": 8411143,
+      "vac": 1.8,
+      "abs_ytd": 73167,
+      "uc": 0,
+      "rent": 26.64
+     },
+     {
+      "name": "LA Central",
+      "inv": 200520562,
+      "vac": 4.3,
+      "abs_ytd": 41471,
+      "uc": 419591,
+      "rent": 13.08
+     },
+     {
+      "name": "Mid-Counties",
+      "inv": 89743084,
+      "vac": 4.7,
+      "abs_ytd": -39737,
+      "uc": 185056,
+      "rent": 15.72
+     },
+     {
+      "name": "LA North",
+      "inv": 149862626,
+      "vac": 4.7,
+      "abs_ytd": -1270844,
+      "uc": 2220709,
+      "rent": 16.44
+     }
+    ]
+   }
+  },
+  "ie": {
+   "name_en": "Inland Empire",
+   "name_zh": "内陆帝国",
+   "partial_submarkets": false,
+   "series": {
+    "2024Q3": {
+     "rent": 14.96,
+     "vac": 7.9,
+     "abs_q": -3152890,
+     "del_ytd": 21339209,
+     "inv": 639147843,
+     "uc": 14812341
+    },
+    "2024Q4": {
+     "rent": 14.76,
+     "vac": 8.0,
+     "abs_q": -422480,
+     "del_ytd": 22792659,
+     "inv": 640629036,
+     "uc": 12564463
+    },
+    "2025Q1": {
+     "rent": 14.18,
+     "vac": 7.4,
+     "abs_q": 3160638,
+     "del_ytd": 1974506,
+     "inv": 643558131,
+     "uc": 11048709
+    },
+    "2025Q2": {
+     "rent": 13.69,
+     "vac": 7.9,
+     "abs_q": -1822576,
+     "del_ytd": 5403688,
+     "inv": 647141859,
+     "uc": 9143728
+    },
+    "2025Q3": {
+     "rent": 13.46,
+     "vac": 7.8,
+     "abs_q": 2993019,
+     "del_ytd": 10070984,
+     "inv": 652716370,
+     "uc": 4939444
+    },
+    "2025Q4": {
+     "rent": 13.19,
+     "vac": 8.1,
+     "abs_q": -1478658,
+     "del_ytd": 12720266,
+     "inv": 655758139,
+     "uc": 2758833
+    },
+    "2026Q1": {
+     "rent": 12.29,
+     "vac": 8.5,
+     "abs_q": -3366628,
+     "del_ytd": 39628,
+     "inv": 655795540,
+     "uc": 3339817
+    },
+    "2026Q2": {
+     "rent": 12.4,
+     "vac": 8.8,
+     "abs_q": -1544214,
+     "del_ytd": 1447549,
+     "inv": 655580790,
+     "uc": 4797056,
+     "abs_ytd": -3811447
+    }
+   },
+   "submarkets": {
+    "2026Q2": [
+     {
+      "name": "IE West",
+      "inv": 340428417,
+      "vac": 7.4,
+      "abs_ytd": -2652448,
+      "uc": 2769439,
+      "rent": 13.68
+     },
+     {
+      "name": "IE East",
+      "inv": 279295604,
+      "vac": 11,
+      "abs_ytd": -1384116,
+      "uc": 2027617,
+      "rent": 11.4
+     },
+     {
+      "name": "IE South",
+      "inv": 35856769,
+      "vac": 4.5,
+      "abs_ytd": 225117,
+      "uc": 0,
+      "rent": 13.56
+     }
+    ]
+   }
+  },
+  "dfw": {
+   "name_en": "Dallas–Fort Worth",
+   "name_zh": "达拉斯–沃斯堡",
+   "partial_submarkets": false,
+   "series": {
+    "2024Q3": {
+     "rent": 8.47,
+     "vac": 9.3,
+     "abs_q": 6296093,
+     "del_ytd": 35731279,
+     "inv": 1004790052,
+     "uc": 16155889
+    },
+    "2024Q4": {
+     "rent": 8.62,
+     "vac": 9.7,
+     "abs_q": 3344396,
+     "del_ytd": 39890075,
+     "inv": 1011402368,
+     "uc": 23631176
+    },
+    "2025Q1": {
+     "rent": 8.61,
+     "vac": 9.7,
+     "abs_q": 6468554,
+     "del_ytd": 5714530,
+     "inv": 1017849122,
+     "uc": 19891670
+    },
+    "2025Q2": {
+     "rent": 8.03,
+     "vac": 9.4,
+     "abs_q": 6777754,
+     "del_ytd": 11118140,
+     "inv": 1023206887,
+     "uc": 22461536
+    },
+    "2025Q3": {
+     "rent": 8.12,
+     "vac": 8.8,
+     "abs_q": 7747274,
+     "del_ytd": 14998979,
+     "inv": 1028920266,
+     "uc": 27527026
+    },
+    "2025Q4": {
+     "rent": 8.38,
+     "vac": 8.2,
+     "abs_q": 8850033,
+     "del_ytd": 19629197,
+     "inv": 1026225706,
+     "uc": 31347140
+    },
+    "2026Q1": {
+     "rent": 8.71,
+     "vac": 8.3,
+     "abs_q": 4280006,
+     "del_ytd": 5096936,
+     "inv": 1031921578,
+     "uc": 31199625
+    },
+    "2026Q2": {
+     "rent": 9.19,
+     "vac": 8.1,
+     "abs_q": 9028165,
+     "del_ytd": 13626586,
+     "inv": 1040462731,
+     "uc": 29831149,
+     "abs_ytd": 13626637
+    }
+   },
+   "submarkets": {
+    "2026Q2": [
+     {
+      "name": "Great Southwest",
+      "inv": 129812979,
+      "vac": 7.6,
+      "abs_ytd": 142078,
+      "uc": 1966711,
+      "rent": 9.32
+     },
+     {
+      "name": "DFW Airport",
+      "inv": 109987100,
+      "vac": 11.2,
+      "abs_ytd": 350875,
+      "uc": 3103143,
+      "rent": 11.2
+     },
+     {
+      "name": "South Dallas",
+      "inv": 101035211,
+      "vac": 9.2,
+      "abs_ytd": 2012660,
+      "uc": 2284000,
+      "rent": 6.55
+     },
+     {
+      "name": "Alliance",
+      "inv": 87423839,
+      "vac": 7.9,
+      "abs_ytd": 3899391,
+      "uc": 7657916,
+      "rent": 9.31
+     },
+     {
+      "name": "North Fort Worth",
+      "inv": 58996537,
+      "vac": 8.1,
+      "abs_ytd": 638783,
+      "uc": 1539294,
+      "rent": 8.76
+     },
+     {
+      "name": "Valwood/N Stemmons",
+      "inv": 51579615,
+      "vac": 4.2,
+      "abs_ytd": -272223,
+      "uc": 541107,
+      "rent": 9.56
+     },
+     {
+      "name": "Brookhollow/Trinity",
+      "inv": 49317551,
+      "vac": 7,
+      "abs_ytd": -72555,
+      "uc": 0,
+      "rent": 11.32
+     },
+     {
+      "name": "South Fort Worth",
+      "inv": 49090241,
+      "vac": 9.3,
+      "abs_ytd": 1818861,
+      "uc": 3464977,
+      "rent": 7.37
+     },
+     {
+      "name": "Garland",
+      "inv": 47228047,
+      "vac": 6.3,
+      "abs_ytd": 589402,
+      "uc": 178978,
+      "rent": 9.9
+     },
+     {
+      "name": "Richardson/Plano",
+      "inv": 39655529,
+      "vac": 7.2,
+      "abs_ytd": 84651,
+      "uc": 365667,
+      "rent": 12.13
+     },
+     {
+      "name": "Far North/I-35",
+      "inv": 37210903,
+      "vac": 15.3,
+      "abs_ytd": 857152,
+      "uc": 237787,
+      "rent": 9.05
+     },
+     {
+      "name": "Pinnacle/Turnpike",
+      "inv": 33089490,
+      "vac": 7.6,
+      "abs_ytd": -220544,
+      "uc": 467245,
+      "rent": 7.77
+     },
+     {
+      "name": "Mesquite",
+      "inv": 32263023,
+      "vac": 8,
+      "abs_ytd": 586082,
+      "uc": 145940,
+      "rent": 8.41
+     },
+     {
+      "name": "East Fort Worth",
+      "inv": 27548947,
+      "vac": 9.9,
+      "abs_ytd": -129061,
+      "uc": 0,
+      "rent": 9.16
+     },
+     {
+      "name": "Ellis County",
+      "inv": 27717609,
+      "vac": 3.6,
+      "abs_ytd": 295150,
+      "uc": 2703641,
+      "rent": 7.12
+     },
+     {
+      "name": "Redbird",
+      "inv": 24929874,
+      "vac": 2.3,
+      "abs_ytd": 275539,
+      "uc": 222520,
+      "rent": 6.65
+     },
+     {
+      "name": "Walnut Hill/Stemmons",
+      "inv": 23932405,
+      "vac": 5.7,
+      "abs_ytd": -153220,
+      "uc": 0,
+      "rent": 10.4
+     },
+     {
+      "name": "East Dallas Suburbs",
+      "inv": 23358029,
+      "vac": 7.9,
+      "abs_ytd": 2392179,
+      "uc": 1442721,
+      "rent": 7.78
+     },
+     {
+      "name": "North Dallas/Metropolitan",
+      "inv": 19682796,
+      "vac": 11,
+      "abs_ytd": 221210,
+      "uc": 0,
+      "rent": 10.25
+     },
+     {
+      "name": "Allen/McKinney",
+      "inv": 18766761,
+      "vac": 11.4,
+      "abs_ytd": 328954,
+      "uc": 1809502,
+      "rent": 10.62
+     },
+     {
+      "name": "Central Fort Worth",
+      "inv": 15848545,
+      "vac": 2.6,
+      "abs_ytd": -144285,
+      "uc": 0,
+      "rent": 7.23
+     },
+     {
+      "name": "Central Dallas",
+      "inv": 12680994,
+      "vac": 5.9,
+      "abs_ytd": 0,
+      "uc": 0,
+      "rent": 9.64
+     },
+     {
+      "name": "Johnson County",
+      "inv": 10594606,
+      "vac": 1.4,
+      "abs_ytd": -12250,
+      "uc": 1700000,
+      "rent": 17.27
+     },
+     {
+      "name": "West Fort Worth",
+      "inv": 8712100,
+      "vac": 13.9,
+      "abs_ytd": 137808,
+      "uc": 0,
+      "rent": 9.57
+     }
+    ]
+   }
+  },
+  "chi": {
+   "name_en": "Chicago",
+   "name_zh": "芝加哥",
+   "partial_submarkets": false,
+   "series": {
+    "2024Q3": {
+     "rent": 7.14,
+     "vac": 4.7,
+     "abs_q": 1929403,
+     "del_ytd": 10344735,
+     "inv": 1244549613,
+     "uc": 10971554
+    },
+    "2024Q4": {
+     "rent": 7.17,
+     "vac": 4.7,
+     "abs_q": 555423,
+     "del_ytd": 13928055,
+     "inv": 1248269761,
+     "uc": 9551490
+    },
+    "2025Q1": {
+     "rent": 7.27,
+     "vac": 4.7,
+     "abs_q": 1473928,
+     "del_ytd": 2465361,
+     "inv": 1251926233,
+     "uc": 7525407
+    },
+    "2025Q2": {
+     "rent": 7.52,
+     "vac": 4.8,
+     "abs_q": 1726289,
+     "del_ytd": 5813294,
+     "inv": 1255524906,
+     "uc": 6812033
+    },
+    "2025Q3": {
+     "rent": 7.36,
+     "vac": 4.7,
+     "abs_q": 1068560,
+     "del_ytd": 7539965,
+     "inv": 1257862673,
+     "uc": 9022016
+    },
+    "2025Q4": {
+     "rent": 7.16,
+     "vac": 4.7,
+     "abs_q": 1081795,
+     "del_ytd": 9417274,
+     "inv": 1259213884,
+     "uc": 10430962
+    },
+    "2026Q1": {
+     "rent": 7.4,
+     "vac": 4.8,
+     "abs_q": 1079092,
+     "del_ytd": 1826529,
+     "inv": 1307585563,
+     "uc": 13526431
+    },
+    "2026Q2": {
+     "rent": 7.55,
+     "vac": 4.8,
+     "abs_q": 3296477,
+     "del_ytd": 5963313,
+     "inv": 1312338633,
+     "uc": 13864888,
+     "abs_ytd": 5135293
+    }
+   },
+   "submarkets": {
+    "2026Q2": [
+     {
+      "name": "Chicago South",
+      "inv": 133353086,
+      "vac": 3.6,
+      "abs_ytd": 218506,
+      "uc": 1035770,
+      "rent": 8.28,
+      "rent_note": "MF"
+     },
+     {
+      "name": "Interstate 80",
+      "inv": 128205264,
+      "vac": 6.2,
+      "abs_ytd": 2943729,
+      "uc": 4704719,
+      "rent": 8.77
+     },
+     {
+      "name": "Interstate 55",
+      "inv": 110146192,
+      "vac": 6.2,
+      "abs_ytd": 1699285,
+      "uc": 1114471,
+      "rent": 7.42
+     },
+     {
+      "name": "Western Cook",
+      "inv": 101182978,
+      "vac": 5.1,
+      "abs_ytd": -26413,
+      "uc": 85680,
+      "rent": 6.04
+     },
+     {
+      "name": "Southern Fox Valley",
+      "inv": 101095780,
+      "vac": 4.8,
+      "abs_ytd": -554801,
+      "uc": 1242905,
+      "rent": 6.84
+     },
+     {
+      "name": "O'Hare",
+      "inv": 97515620,
+      "vac": 4.2,
+      "abs_ytd": 46908,
+      "uc": 1167172,
+      "rent": 9.6
+     },
+     {
+      "name": "Chicago North",
+      "inv": 89691152,
+      "vac": 4.5,
+      "abs_ytd": -444703,
+      "uc": 67593,
+      "rent": 8.83,
+      "rent_note": "MF"
+     },
+     {
+      "name": "South Suburbs",
+      "inv": 89377990,
+      "vac": 4.6,
+      "abs_ytd": 115187,
+      "uc": 0,
+      "rent": 5.36
+     },
+     {
+      "name": "Lake County",
+      "inv": 76207595,
+      "vac": 4.3,
+      "abs_ytd": 886285,
+      "uc": 0,
+      "rent": 7.5
+     },
+     {
+      "name": "Southeast Wisconsin",
+      "inv": 65149547,
+      "vac": 7.9,
+      "abs_ytd": 376381,
+      "uc": 0,
+      "rent": 5.68
+     },
+     {
+      "name": "Northern Cook",
+      "inv": 51345561,
+      "vac": 4.7,
+      "abs_ytd": 132015,
+      "uc": 0,
+      "rent": 8.47
+     },
+     {
+      "name": "Northwest Indiana",
+      "inv": 47854719,
+      "vac": 5.9,
+      "abs_ytd": -169018,
+      "uc": 2547770,
+      "rent": 6.6
+     },
+     {
+      "name": "Central DuPage",
+      "inv": 46110605,
+      "vac": 2.8,
+      "abs_ytd": -166322,
+      "uc": 289440,
+      "rent": 9.27,
+      "rent_note": "MF"
+     },
+     {
+      "name": "Northern Fox Valley",
+      "inv": 42796077,
+      "vac": 4.1,
+      "abs_ytd": 651259,
+      "uc": 249411,
+      "rent": 8
+     },
+     {
+      "name": "Northwest Cook",
+      "inv": 35109520,
+      "vac": 5.8,
+      "abs_ytd": -259365,
+      "uc": 423036,
+      "rent": 9.71
+     },
+     {
+      "name": "Northeast DuPage",
+      "inv": 29060683,
+      "vac": 3.1,
+      "abs_ytd": -330049,
+      "uc": 140122,
+      "rent": 9.04
+     },
+     {
+      "name": "McHenry County",
+      "inv": 22760837,
+      "vac": 2.9,
+      "abs_ytd": 100481,
+      "uc": 428900,
+      "rent": 7.95
+     },
+     {
+      "name": "Interstate 39",
+      "inv": 22405068,
+      "vac": 3.3,
+      "abs_ytd": -132120,
+      "uc": 0,
+      "rent": 6.91
+     },
+     {
+      "name": "Southern DuPage",
+      "inv": 15982762,
+      "vac": 0.8,
+      "abs_ytd": 54508,
+      "uc": 367899,
+      "rent": 11.51
+     },
+     {
+      "name": "Western Kane",
+      "inv": 6987597,
+      "vac": 5.1,
+      "abs_ytd": -6460,
+      "uc": 0,
+      "rent": null
+     }
+    ]
+   }
+  },
+  "nnj": {
+   "name_en": "Northern New Jersey",
+   "name_zh": "北新泽西",
+   "partial_submarkets": true,
+   "series": {
+    "2024Q3": {
+     "rent": 18.82,
+     "vac": 7.4,
+     "abs_q": -1555045,
+     "del_ytd": 2802056,
+     "inv": 306336048,
+     "uc": 4213493
+    },
+    "2024Q4": {
+     "rent": 18.67,
+     "vac": 8.3,
+     "abs_q": -1177592,
+     "del_ytd": 4842855,
+     "inv": 309289477,
+     "uc": 3479146
+    },
+    "2025Q1": {
+     "rent": 18.43,
+     "vac": 8.2,
+     "abs_q": 797478,
+     "del_ytd": 319396,
+     "inv": 310413053,
+     "uc": 3581085
+    },
+    "2025Q2": {
+     "rent": 17.89,
+     "vac": 8.6,
+     "abs_q": -699298,
+     "del_ytd": 1186792,
+     "inv": 311613093,
+     "uc": 3431441
+    },
+    "2025Q3": {
+     "rent": 17.99,
+     "vac": 8.3,
+     "abs_q": 1050773,
+     "del_ytd": 1439517,
+     "inv": 311473986,
+     "uc": 3383997
+    },
+    "2025Q4": {
+     "rent": 17.82,
+     "vac": 8.9,
+     "abs_q": -1237058,
+     "del_ytd": 2006877,
+     "inv": 311656304,
+     "uc": 2969312
+    },
+    "2026Q1": {
+     "rent": 17.44,
+     "vac": 8.3,
+     "abs_q": 2014490,
+     "del_ytd": 1695928,
+     "inv": 314907078,
+     "uc": 1918253
+    },
+    "2026Q2": {
+     "rent": 17.72,
+     "vac": 8.3,
+     "abs_q": 260822,
+     "del_ytd": 1915959,
+     "inv": 316276230,
+     "uc": 2505560,
+     "abs_ytd": 2344001
+    }
+   },
+   "submarkets": {
+    "2026Q2": [
+     {
+      "name": "Port Region",
+      "inv": 98252766,
+      "vac": 11.6,
+      "abs_ytd": null,
+      "uc": null,
+      "rent": 18.85
+     },
+     {
+      "name": "Greater I-80 Corridor",
+      "inv": 86310086,
+      "vac": 7.1,
+      "abs_ytd": null,
+      "uc": null,
+      "rent": 16.28
+     },
+     {
+      "name": "Meadowlands",
+      "inv": 82207459,
+      "vac": 8.1,
+      "abs_ytd": null,
+      "uc": null,
+      "rent": 18.46
+     },
+     {
+      "name": "Central Bergen",
+      "inv": 21526216,
+      "vac": 8.6,
+      "abs_ytd": null,
+      "uc": null,
+      "rent": 16.05
+     },
+     {
+      "name": "Northern Bergen",
+      "inv": 17133977,
+      "vac": 5.5,
+      "abs_ytd": null,
+      "uc": null,
+      "rent": 16.26
+     },
+     {
+      "name": "Suburban Essex",
+      "inv": 10459804,
+      "vac": 3.2,
+      "abs_ytd": null,
+      "uc": null,
+      "rent": 16.48
+     },
+     {
+      "name": "GW Bridge Market",
+      "inv": 3751211,
+      "vac": 7.2,
+      "abs_ytd": null,
+      "uc": null,
+      "rent": 17.72
+     },
+     {
+      "name": "Route 23 North",
+      "inv": 572179,
+      "vac": 14.2,
+      "abs_ytd": null,
+      "uc": null,
+      "rent": 13
+     }
+    ]
+   }
+  }
+ },
+ "us_vacancy": {
+  "2024Q3": 6.4,
+  "2024Q4": 6.7,
+  "2025Q1": 7.0,
+  "2025Q2": 7.1,
+  "2025Q3": 7.1,
+  "2025Q4": 7.1,
+  "2026Q1": 7.0,
+  "2026Q2": 6.9
+ }
+}

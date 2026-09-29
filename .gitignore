@@ -1,0 +1,5 @@
+.env
+__pycache__/
+data/raw/
+.DS_Store
+API_KEY.txt

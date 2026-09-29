@@ -1,0 +1,66 @@
+# Runs the quarterly update on GitHub's computers and publishes the dashboard with GitHub Pages.
+# - Scheduled: checks on the 1st and 15th of Feb, May, Aug and Nov (after Cushman publishes).
+#   If the new quarter's reports aren't out yet, it stops quietly and tries again next time.
+# - Manual: Actions tab -> "Update and publish" -> Run workflow (optionally type a quarter like 2026Q3).
+# - Any change you push to the main branch also republishes the site.
+name: Update and publish
+
+on:
+  schedule:
+    - cron: "0 17 1,15 2,5,8,11 *"
+  workflow_dispatch:
+    inputs:
+      quarter:
+        description: "Quarter to update, e.g. 2026Q3 (leave empty for the latest one)"
+        required: false
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  update:
+    if: github.event_name != 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - name: Run the quarterly update
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: python run_quarter.py ${{ github.event.inputs.quarter || '--auto' }}
+      - name: Save the new data
+        run: |
+          git config user.name "quarterly-update-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add data site
+          git diff --cached --quiet || git commit -m "Quarterly update"
+          git push
+
+  publish:
+    needs: [update]
+    if: always() && (needs.update.result == 'success' || needs.update.result == 'skipped')
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+      - id: deploy
+        uses: actions/deploy-pages@v4

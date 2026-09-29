@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Industrial Market Monitor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;600;700&display=swap">
+<style>
+/* Single light look, matching the reference dashboard. All colors set explicitly. */
+:root{
+  --side:#0E1112; --side-ink:#C9CFD1; --side-dim:#7C878B; --side-act:#1F2528;
+  --bg:#F4F6F6; --surface:#FFFFFF; --line:#E3E7E7; --line-2:#EEF1F1;
+  --ink:#16191B; --ink-2:#4B5559; --ink-3:#7B868A;
+  --teal:#4DA38F; --tan:#C8A07A; --deep:#1C5B57; --lime:#A7C83B; --blue:#1F6C8D;
+  --up:#2A8A5A; --down:#C23B32;
+  --good:#2C7A4B; --good-bg:#E0F1E6; --warn:#9A6414; --warn-bg:#F7ECD6; --bad:#A93838; --bad-bg:#F7E1DF;
+  --body:"Source Sans 3","Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+  --display:"Archivo","Noto Sans SC","Helvetica Neue",Arial,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:14.5px;line-height:1.5}
+.app{display:grid;grid-template-columns:210px minmax(0,1fr);min-height:100%}
+/* sidebar */
+.side{background:var(--side);color:var(--side-ink);display:flex;flex-direction:column;padding-block:18px 16px;position:sticky;top:env(safe-area-inset-top,0px);height:100vh}
+.brand{padding-inline:18px;display:flex;flex-direction:column;gap:2px;padding-bottom:16px;border-bottom:1px solid #1C2224}
+.brand b{font-family:var(--display);font-size:17px;color:#fff;letter-spacing:.01em}
+.brand span{font-size:12px;color:var(--side-dim)}
+.nav{display:flex;flex-direction:column;gap:2px;padding:14px 10px}
+.nav button{all:unset;display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:6px;font-size:14px;color:var(--side-ink);cursor:pointer}
+.nav button svg{width:15px;height:15px;flex:none}
+.nav button[aria-current="page"]{background:var(--side-act);color:#fff;font-weight:600}
+.nav button:disabled{color:var(--side-dim);cursor:default}
+.nav button small{margin-left:auto;font-size:10.5px;border:1px solid #2A3134;border-radius:3px;padding:0 5px;color:var(--side-dim)}
+.nav button:focus-visible{outline:2px solid var(--teal)}
+.side-foot{margin-top:auto;padding:12px 18px 0;border-top:1px solid #1C2224;display:flex;flex-direction:column;gap:10px;font-size:12px;color:var(--side-dim)}
+.lang{display:flex;align-items:center;gap:8px}
+.lang button{all:unset;cursor:pointer;padding:1px 8px;border-radius:4px;color:var(--side-dim);font-size:12.5px}
+.lang button[aria-pressed="true"]{background:#2A3134;color:#fff}
+.lang button:focus-visible{outline:2px solid var(--teal)}
+@media (max-width:860px){
+  .app{grid-template-columns:1fr}
+  .side{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;padding:12px 16px;gap:8px}
+  .brand{border:0;padding:0}
+  .nav{flex-direction:row;overflow-x:auto;padding:0;flex:1 1 100%}
+  .nav button{white-space:nowrap}
+  .side-foot{border:0;padding:0;margin:0 0 0 auto}
+  .side-foot .who{display:none}
+}
+/* main */
+.main{min-width:0;display:flex;flex-direction:column}
+.top{background:var(--surface);border-bottom:1px solid var(--line);padding:18px 28px}
+.top h1{font-family:var(--display);font-size:22px;margin:0;font-weight:700}
+.top p{margin:2px 0 0;color:var(--ink-3);font-size:13.5px}
+.content{padding:18px 28px 40px;display:flex;flex-direction:column;gap:16px}
+@media (max-width:600px){.top{padding:16px}.content{padding:16px 16px 32px}}
+.controls{display:flex;flex-wrap:wrap;align-items:center;gap:14px 18px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--surface)}
+.seg button{all:unset;cursor:pointer;padding:7px 14px;font-size:13.5px;color:var(--ink-2)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:#fff;font-weight:600}
+.seg button:focus-visible{outline:2px solid var(--teal);outline-offset:-2px}
+.field{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--ink-3)}
+.field select{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:6px 28px 6px 10px}
+.field select:focus-visible{outline:2px solid var(--teal)}
+.field b{color:var(--ink);font-weight:600}
+[hidden]{display:none!important}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;padding:2px 9px 2px 7px;border-radius:999px;white-space:nowrap}
+.chip svg{width:12px;height:12px}
+.chip.good{background:var(--good-bg);color:var(--good)} .chip.warn{background:var(--warn-bg);color:var(--warn)} .chip.bad{background:var(--bad-bg);color:var(--bad)}
+
+.kpis{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px}
+@media (max-width:1100px){.kpis{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:520px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.kpi .l{font-size:12.5px;color:var(--ink-3)}
+.kpi .v{font-family:var(--display);font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.kpi .d{font-size:12.5px;font-weight:600;font-variant-numeric:tabular-nums}
+.kpi .d.up{color:var(--up)} .kpi .d.down{color:var(--down)} .kpi .d.flat{color:var(--ink-3);font-weight:400}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:16px 18px;position:relative;min-width:0}
+.card h2{font-size:14.5px;font-weight:700;margin:0;font-family:var(--body)}
+.card .sub{font-size:12.5px;color:var(--ink-3);margin:2px 0 10px}
+.ai .hd{display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--ink-3);margin-bottom:6px}
+.ai .hd svg{width:14px;height:14px}
+.ai p{margin:0;font-size:14.5px;line-height:1.7;max-width:none}
+.ai .gen{font-size:12px;color:var(--ink-3);margin-top:8px}
+.row2{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:16px}
+@media (max-width:1000px){.row2{grid-template-columns:1fr}}
+.chartbox{overflow-x:auto}
+.chartbox svg{display:block;width:100%;height:auto}
+.chartbox.wide svg{min-width:640px}
+svg text{font-family:var(--body);font-size:11.5px;fill:var(--ink-3)}
+svg text.v{fill:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+svg text.chg{fill:var(--blue);font-weight:700}
+svg .hit{fill:transparent}
+.legend{display:flex;flex-wrap:wrap;justify-content:center;gap:16px;font-size:12.5px;color:var(--ink-2);margin-top:6px}
+.legend i{display:inline-block;width:12px;height:10px;border-radius:2px;margin-right:6px;vertical-align:-1px}
+.legend i.line{height:2px;width:16px;vertical-align:3px;border-radius:0}
+.tip{position:fixed;pointer-events:none;background:var(--ink);color:#fff;font-size:12.5px;padding:6px 9px;border-radius:4px;white-space:nowrap;z-index:9}
+
+.tbl{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+th{font-size:12.5px;font-weight:600;color:var(--ink-3);text-align:right;padding:9px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+td{padding:9px 12px;border-bottom:1px solid var(--line-2);text-align:right;white-space:nowrap}
+th:first-child,td:first-child{text-align:left}
+tbody tr:last-child td{border-bottom:0}
+tbody tr.sel td{background:#EEF6F4}
+tbody tr.clk{cursor:pointer}
+tbody tr.clk:hover td{background:#F6F8F8}
+.stockcell{display:flex;align-items:center;justify-content:flex-end;gap:10px}
+.stockcell .bar{width:90px;height:7px;background:var(--line-2);border-radius:4px;overflow:hidden}
+.stockcell .bar i{display:block;height:100%;background:var(--teal);border-radius:4px}
+.neg{color:var(--down)} .muted{color:var(--ink-3)}
+.foot{font-size:12px;color:var(--ink-3);line-height:1.6}
+.foot a{color:var(--blue)}
+.maphead{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:10px}
+.mapctl{display:flex;flex-wrap:wrap;align-items:center;gap:12px 16px}
+.chk{display:flex;align-items:center;gap:6px;font-size:13.5px;color:var(--ink-2)}
+.chk input{accent-color:var(--deep)}
+.field input[type=range]{accent-color:var(--deep);width:110px}
+.mapgrid{display:grid;grid-template-columns:minmax(0,1fr) 270px;gap:14px}
+@media (max-width:900px){.mapgrid{grid-template-columns:1fr}}
+.mapwrap{position:relative;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:#F2F5F4}
+.mapwrap canvas{display:block;width:100%}
+.maplegend{position:absolute;left:10px;bottom:10px;background:rgba(255,255,255,.92);border:1px solid var(--line);border-radius:6px;padding:7px 10px;font-size:11.5px;color:var(--ink-2);display:flex;flex-direction:column;gap:4px;min-width:170px}
+.maplegend .ramp{height:8px;border-radius:4px;background:linear-gradient(90deg,#FFF1A8,#F9B24A,#E5672C,#B32A24,#6E1414)}
+.maplegend .ends{display:flex;justify-content:space-between;font-variant-numeric:tabular-nums}
+.maplist{border:1px solid var(--line);border-radius:6px;display:flex;flex-direction:column;max-height:560px;min-width:0}
+.maplist-h{display:flex;justify-content:space-between;gap:8px;padding:9px 12px;border-bottom:1px solid var(--line);font-size:12.5px;font-weight:600;color:var(--ink-2)}
+.maplist ol{list-style:none;margin:0;padding:0;overflow-y:auto}
+.maplist li{display:grid;grid-template-columns:1fr auto;gap:2px 10px;padding:8px 12px;border-bottom:1px solid var(--line-2);cursor:pointer;font-size:13.5px}
+.maplist li:hover,.maplist li.hot{background:#F6F8F8}
+.maplist li:focus-visible{outline:2px solid var(--teal);outline-offset:-2px}
+.maplist li b{font-weight:600;font-variant-numeric:tabular-nums}
+.maplist li i{grid-column:1/-1;height:4px;border-radius:2px;background:var(--line-2);display:block;overflow:hidden}
+.maplist li i span{display:block;height:100%;background:#E5672C;border-radius:2px}
+.compare-note{font-size:13.5px;color:var(--ink-2);margin:0}
+</style>
+
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand"><b>Industrial Monitor</b><span data-i="brandSub">Market intelligence</span></div>
+    <nav class="nav" aria-label="Sections">
+      <button id="nav-ov" aria-current="page"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2 14V2M2 14h12M5 11V8M8 11V5M11 11V7" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg><span data-i="navOverview">Market overview</span></button>
+      <button id="nav-map"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 5.5l-1.6 3.4-3.4 1.6 1.6-3.4z" fill="none" stroke="currentColor" stroke-width="1.3"/></svg><span data-i="navMap">Map board</span></button>
+    </nav>
+    <div class="side-foot">
+      <span class="who" data-i="srcShort">Source: Cushman &amp; Wakefield</span>
+      <div class="lang"><span data-i="lang">Language</span><button id="lang-zh" aria-pressed="false">中</button><span>/</span><button id="lang-en" aria-pressed="true">EN</button></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="top">
+      <h1 data-i="title">Market overview</h1>
+      <p data-i="subtitle">Stock, rent, supply and absorption for each metro and submarket</p>
+    </div>
+    <div class="content">
+      <div class="controls">
+        <div class="seg" role="group" aria-label="Level" id="levelSeg">
+          <button id="lv-city" aria-pressed="true" data-i="cityLevel">City level</button>
+          <button id="lv-sub" aria-pressed="false" data-i="subLevel">Submarket level</button>
+        </div>
+        <label class="field"><span data-i="city">City</span><select id="citySel"></select></label>
+        <label class="field" id="subField" hidden><span data-i="submarket">Submarket</span><select id="subSel"></select></label>
+        <span class="field"><span data-i="period">Report period</span> <b id="periodVal"></b></span>
+        <span id="readChip"></span>
+      </div>
+
+      <div id="cityView" style="display:contents">
+        <div class="kpis" id="kpis"></div>
+        <section class="card ai">
+          <div class="hd"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5l1.4 3.6L13 6.5 9.4 7.9 8 11.5 6.6 7.9 3 6.5l3.6-1.4zM12.5 10.5l.6 1.4 1.4.6-1.4.6-.6 1.4-.6-1.4-1.4-.6 1.4-.6z" fill="currentColor"/></svg><span data-i="aiTitle">This quarter's market update (AI)</span></div>
+          <p id="aiText"></p>
+          <div class="gen" data-i="aiGen">Drafted by Claude from the figures on this page · 2026-09-27</div>
+        </section>
+        <section class="card">
+          <h2 data-i="qRentTitle">Quarterly average rent and rent change</h2>
+          <div class="sub" data-i="qRentSub">Last 8 quarters: bars show asking rent ($/sf/yr); numbers on top are the quarter-over-quarter change. Bars for the same quarter as the latest are highlighted for year-over-year comparison.</div>
+          <div class="chartbox wide"><svg id="qRent"></svg></div>
+          <div class="legend"><span><i style="background:var(--teal)"></i><span data-i="lgQ2">Q2 (same quarter)</span></span><span><i style="background:var(--tan)"></i><span data-i="lgOther">Other quarters</span></span></div>
+        </section>
+        <div class="row2">
+          <section class="card">
+            <h2 data-i="saTitle">Quarterly new supply vs net absorption</h2>
+            <div class="sub" data-i="saSub">Million sf per quarter; the line above the bars is occupancy (%). Absorption is as first reported each quarter.</div>
+            <div class="chartbox wide"><svg id="supAbs"></svg></div>
+            <div class="legend"><span><i style="background:var(--deep)"></i><span data-i="lgSupply">New supply</span></span><span><i style="background:var(--lime)"></i><span data-i="lgAbs">Net absorption</span></span><span><i class="line" style="background:var(--blue)"></i><span data-i="lgOcc">Occupancy (%)</span></span></div>
+          </section>
+          <section class="card">
+            <h2 data-i="yRentTitle">Annual average rent and rent change</h2>
+            <div class="sub" data-i="yRentSub">Year-end asking rent ($/sf/yr) and the current quarter; numbers on top are the change from the previous bar.</div>
+            <div class="chartbox"><svg id="yRent"></svg></div>
+          </section>
+        </div>
+        <section class="card">
+          <h2 data-i="subTblTitle">Submarket overview</h2>
+          <div class="sub" data-i="subTblSub">Click a row to open that submarket.</div>
+          <div class="tbl"><table><thead id="subHead"></thead><tbody id="subBody"></tbody></table></div>
+        </section>
+        <section class="card">
+          <h2 data-i="subCmpTitle">Submarket comparison: rent and occupancy (this quarter)</h2>
+          <div class="sub" data-i="subCmpSub">Bars show asking rent ($/sf/yr); the line above is occupancy (%).</div>
+          <div class="chartbox wide"><svg id="subCmp"></svg></div>
+          <div class="legend"><span><i style="background:var(--teal)"></i><span data-i="lgRent">Average rent</span></span><span><i class="line" style="background:var(--blue)"></i><span data-i="lgOcc">Occupancy (%)</span></span></div>
+        </section>
+      </div>
+
+      <div id="subView" hidden style="display:contents">
+        <div class="kpis" id="subKpis"></div>
+        <section class="card ai">
+          <div class="hd"><svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 1.5l1.4 3.6L13 6.5 9.4 7.9 8 11.5 6.6 7.9 3 6.5l3.6-1.4z" fill="currentColor"/></svg><span data-i="vsMetro">Compared with the metro</span></div>
+          <p id="subText"></p>
+        </section>
+        <section class="card">
+          <h2 data-i="subCmpTitle">Submarket comparison: rent and occupancy (this quarter)</h2>
+          <div class="sub" data-i="subCmpSub">Bars show asking rent ($/sf/yr); the line above is occupancy (%).</div>
+          <div class="chartbox wide"><svg id="subCmp2"></svg></div>
+          <div class="legend"><span><i style="background:var(--teal)"></i><span data-i="lgRent">Average rent</span></span><span><i class="line" style="background:var(--blue)"></i><span data-i="lgOcc">Occupancy (%)</span></span></div>
+        </section>
+      </div>
+
+      <div id="mapView" hidden>
+        <section class="card">
+          <div class="maphead">
+            <div><h2 data-i="mapTitle">Submarket heat map</h2><div class="sub" data-i="mapSub">Where supply, vacancy and rent are concentrated in this metro. Hover a circle for its numbers; click to open that submarket.</div></div>
+            <div class="mapctl">
+              <label class="chk"><input type="checkbox" id="heatOn" checked> <span data-i="heatmap">Heat map</span></label>
+              <div class="seg" role="group" aria-label="Metric" id="metricSeg">
+                <button data-metric="supply" aria-pressed="true" data-i="mSupply">Supply</button>
+                <button data-metric="vac" aria-pressed="false" data-i="mVac">Vacancy</button>
+                <button data-metric="rent" aria-pressed="false" data-i="mRent">Rent</button>
+              </div>
+              <label class="field" for="heatOp"><span data-i="opacity">Opacity</span><input type="range" id="heatOp" min="20" max="100" value="70"><b id="heatOpV">70%</b></label>
+            </div>
+          </div>
+          <div class="mapgrid">
+            <div class="mapwrap" id="mapWrap"><canvas id="mapCanvas" aria-label="Heat map of submarkets"></canvas><div class="maplegend" id="mapLegend"></div></div>
+            <div class="maplist"><div class="maplist-h"><span data-i="rankTitle">Submarkets</span><span id="rankNote" class="muted"></span></div><ol id="mapList"></ol></div>
+          </div>
+          <p class="foot" data-i="mapNote">Circles are approximate submarket centers and gray squares are reference points. The map has no streets or boundaries; it shows where each submarket sits relative to the others.</p>
+        </section>
+      </div>
+
+      <p class="foot" id="foot"></p>
+    </div>
+  </main>
+</div>
+<div class="tip" id="tip" hidden></div>
+
+<script>
+// Data is injected by scripts/build_site.py — do not edit by hand.
+const DATA = {"quarters": ["Q3'24", "Q4'24", "Q1'25", "Q2'25", "Q3'25", "Q4'25", "Q1'26", "Q2'26"], "metros": [{"id": "la", "en": "Los Angeles", "zh": "洛杉矶", "rent": [17.26, 16.72, 16.4, 16.1, 16.08, 15.96, 16.06, 15.83], "vac": [4.8, 4.9, 4.9, 4.8, 4.8, 4.6, 4.6, 4.2], "abs": [-3384155, -2135712, -729788, -1118053, 474742, -437789, -2173366, 1233596], "del": [null, 1368047, 1380614, 1044870, 1584407, 552374, 352707, 408737], "inv": 800488691, "invPrev": 802544883, "uc": 4433489, "ucPrev": 4354409, "ytdAbs": 1760037, "ytdDel": 761444, "prevYtdDel": 2425484, "partial": false, "subs": [["LA South", 192785851, 4.5, 2734389, 1284389, 16.44], ["San Gabriel Valley", 159165425, 2.9, 221591, 323744, 17.28], ["LA West", 8411143, 1.8, 73167, 0, 26.64], ["LA Central", 200520562, 4.3, 41471, 419591, 13.08], ["Mid-Counties", 89743084, 4.7, -39737, 185056, 15.72], ["LA North", 149862626, 4.7, -1270844, 2220709, 16.44]], "note": {"en": "In Q2 2026, Los Angeles occupancy rose to 95.8%, up 0.4 points from Q1, as tenants absorbed a net 1.23M sf, led by LA South (+1.98M sf in the quarter). Asking rents slipped to $15.83/sf/yr, down 1.4% QoQ and 8.3% below Q3 2024. New supply is thin: 0.76M sf delivered this year and 4.4M sf under construction, about 0.6% of stock. With little new space coming, occupancy should stay tight, and rents look more likely to stabilize than to rebound soon.", "zh": "2026年第二季度，洛杉矶工业市场出租率回升至95.8%，环比上升0.4个百分点，本季净吸纳量约123万平方英尺，主要来自LA South（本季+198万平方英尺）。平均要价租金为15.83美元/平方英尺/年，环比下降1.4%，较2024年第三季度累计下降8.3%。新增供应有限，今年新交付76万平方英尺，在建约443万平方英尺，约占存量0.6%。由于未来供应较少，预计出租率保持高位，租金短期以企稳为主，较难快速反弹。"}}, {"id": "ie", "en": "Inland Empire", "zh": "内陆帝国", "rent": [14.96, 14.76, 14.18, 13.69, 13.46, 13.19, 12.29, 12.4], "vac": [7.9, 8.0, 7.4, 7.9, 7.8, 8.1, 8.5, 8.8], "abs": [-3152890, -422480, 3160638, -1822576, 2993019, -1478658, -3366628, -1544214], "del": [null, 1453450, 1974506, 3429182, 4667296, 2649282, 39628, 1407921], "inv": 655580790, "invPrev": 655795540, "uc": 4797056, "ucPrev": 3339817, "ytdAbs": -3811447, "ytdDel": 1447549, "prevYtdDel": 5403688, "partial": false, "subs": [["IE West", 340428417, 7.4, -2652448, 2769439, 13.68], ["IE East", 279295604, 11, -1384116, 2027617, 11.4], ["IE South", 35856769, 4.5, 225117, 0, 13.56]], "note": {"en": "Inland Empire occupancy fell to 91.2% in Q2 2026, down 0.3 points QoQ, as tenants vacated a net 1.54M sf (3.81M sf so far this year). IE West accounts for most of this year's losses, and IE East has the highest vacancy at 11.0%. Asking rents edged up 0.9% QoQ to $12.40/sf/yr but are 9.4% below a year ago and 17% below Q3 2024. Space under construction rose to 4.8M sf from 3.3M sf last quarter. Rents are likely to stay under pressure until move-outs slow.", "zh": "2026年第二季度，内陆帝国出租率降至91.2%，环比下降0.3个百分点，本季净退租约154万平方英尺（今年累计净退租381万平方英尺）。今年的退租主要集中在IE West，IE East空置率最高，达11.0%。平均要价租金环比微升0.9%至12.40美元/平方英尺/年，但同比下降9.4%，较2024年第三季度下降17%。在建面积由上季度的334万平方英尺增至480万平方英尺。在退租放缓之前，租金预计仍承压。"}}, {"id": "dfw", "en": "Dallas–Fort Worth", "zh": "达拉斯–沃斯堡", "rent": [8.47, 8.62, 8.61, 8.03, 8.12, 8.38, 8.71, 9.19], "vac": [9.3, 9.7, 9.7, 9.4, 8.8, 8.2, 8.3, 8.1], "abs": [6296093, 3344396, 6468554, 6777754, 7747274, 8850033, 4280006, 9028165], "del": [null, 4158796, 5714530, 5403610, 3880839, 4630218, 5096936, 8529650], "inv": 1040462731, "invPrev": 1031921578, "uc": 29831149, "ucPrev": 31199625, "ytdAbs": 13626637, "ytdDel": 13626586, "prevYtdDel": 11118140, "partial": false, "subs": [["Great Southwest", 129812979, 7.6, 142078, 1966711, 9.32], ["DFW Airport", 109987100, 11.2, 350875, 3103143, 11.2], ["South Dallas", 101035211, 9.2, 2012660, 2284000, 6.55], ["Alliance", 87423839, 7.9, 3899391, 7657916, 9.31], ["North Fort Worth", 58996537, 8.1, 638783, 1539294, 8.76], ["Valwood/N Stemmons", 51579615, 4.2, -272223, 541107, 9.56], ["Brookhollow/Trinity", 49317551, 7, -72555, 0, 11.32], ["South Fort Worth", 49090241, 9.3, 1818861, 3464977, 7.37], ["Garland", 47228047, 6.3, 589402, 178978, 9.9], ["Richardson/Plano", 39655529, 7.2, 84651, 365667, 12.13], ["Far North/I-35", 37210903, 15.3, 857152, 237787, 9.05], ["Pinnacle/Turnpike", 33089490, 7.6, -220544, 467245, 7.77], ["Mesquite", 32263023, 8, 586082, 145940, 8.41], ["East Fort Worth", 27548947, 9.9, -129061, 0, 9.16], ["Ellis County", 27717609, 3.6, 295150, 2703641, 7.12], ["Redbird", 24929874, 2.3, 275539, 222520, 6.65], ["Walnut Hill/Stemmons", 23932405, 5.7, -153220, 0, 10.4], ["East Dallas Suburbs", 23358029, 7.9, 2392179, 1442721, 7.78], ["North Dallas/Metropolitan", 19682796, 11, 221210, 0, 10.25], ["Allen/McKinney", 18766761, 11.4, 328954, 1809502, 10.62], ["Central Fort Worth", 15848545, 2.6, -144285, 0, 7.23], ["Central Dallas", 12680994, 5.9, 0, 0, 9.64], ["Johnson County", 10594606, 1.4, -12250, 1700000, 17.27], ["West Fort Worth", 8712100, 13.9, 137808, 0, 9.57]], "note": {"en": "Dallas–Fort Worth absorbed a net 9.03M sf in Q2 2026, the most of the five metros, lifting occupancy to 91.9% (up 0.2 points QoQ). Asking rents rose 5.5% QoQ to $9.19/sf/yr, 14.4% above a year ago. Alliance led demand with 3.9M sf absorbed this year. The risk is supply: 13.6M sf has been delivered this year and 29.8M sf is still under construction, about 2.9% of stock, so further occupancy gains depend on demand keeping pace.", "zh": "2026年第二季度，达拉斯–沃斯堡净吸纳量达903万平方英尺，为五个城市中最高，带动出租率升至91.9%（环比上升0.2个百分点）。平均要价租金环比上涨5.5%至9.19美元/平方英尺/年，同比上涨14.4%。Alliance子市场需求最强，今年累计净吸纳390万平方英尺。主要风险在供应端：今年已交付1,363万平方英尺，仍有2,983万平方英尺在建，约占存量2.9%，出租率能否继续上升取决于需求能否跟上。"}}, {"id": "chi", "en": "Chicago", "zh": "芝加哥", "rent": [7.14, 7.17, 7.27, 7.52, 7.36, 7.16, 7.4, 7.55], "vac": [4.7, 4.7, 4.7, 4.8, 4.7, 4.7, 4.8, 4.8], "abs": [1929403, 555423, 1473928, 1726289, 1068560, 1081795, 1079092, 3296477], "del": [null, 3583320, 2465361, 3347933, 1726671, 1877309, 1826529, 4136784], "inv": 1312338633, "invPrev": 1307585563, "uc": 13864888, "ucPrev": 13526431, "ytdAbs": 5135293, "ytdDel": 5963313, "prevYtdDel": 5813294, "partial": false, "subs": [["Chicago South", 133353086, 3.6, 218506, 1035770, 8.28, "MF"], ["Interstate 80", 128205264, 6.2, 2943729, 4704719, 8.77], ["Interstate 55", 110146192, 6.2, 1699285, 1114471, 7.42], ["Western Cook", 101182978, 5.1, -26413, 85680, 6.04], ["Southern Fox Valley", 101095780, 4.8, -554801, 1242905, 6.84], ["O'Hare", 97515620, 4.2, 46908, 1167172, 9.6], ["Chicago North", 89691152, 4.5, -444703, 67593, 8.83, "MF"], ["South Suburbs", 89377990, 4.6, 115187, 0, 5.36], ["Lake County", 76207595, 4.3, 886285, 0, 7.5], ["Southeast Wisconsin", 65149547, 7.9, 376381, 0, 5.68], ["Northern Cook", 51345561, 4.7, 132015, 0, 8.47], ["Northwest Indiana", 47854719, 5.9, -169018, 2547770, 6.6], ["Central DuPage", 46110605, 2.8, -166322, 289440, 9.27, "MF"], ["Northern Fox Valley", 42796077, 4.1, 651259, 249411, 8], ["Northwest Cook", 35109520, 5.8, -259365, 423036, 9.71], ["Northeast DuPage", 29060683, 3.1, -330049, 140122, 9.04], ["McHenry County", 22760837, 2.9, 100481, 428900, 7.95], ["Interstate 39", 22405068, 3.3, -132120, 0, 6.91], ["Southern DuPage", 15982762, 0.8, 54508, 367899, 11.51], ["Western Kane", 6987597, 5.1, -6460, 0, null]], "note": {"en": "Chicago occupancy held at 95.2% in Q2 2026, and vacancy has stayed between 4.7% and 4.8% for two years. Net absorption picked up to 3.30M sf in the quarter, and asking rents rose 2.0% QoQ to $7.55/sf/yr, roughly flat versus a year ago. Construction has doubled from 6.8M sf a year ago to 13.9M sf, a third of it in the I-80 corridor. The market is steady, but the growing pipeline is worth watching.", "zh": "2026年第二季度，芝加哥出租率保持在95.2%，空置率过去两年一直维持在4.7%至4.8%之间。本季净吸纳量回升至330万平方英尺，平均要价租金环比上涨2.0%至7.55美元/平方英尺/年，与去年同期基本持平。在建面积由一年前的681万平方英尺翻倍至1,386万平方英尺，其中约三分之一位于I-80走廊。市场整体稳健，但在建规模上升值得关注。"}}, {"id": "nnj", "en": "Northern New Jersey", "zh": "北新泽西", "rent": [18.82, 18.67, 18.43, 17.89, 17.99, 17.82, 17.44, 17.72], "vac": [7.4, 8.3, 8.2, 8.6, 8.3, 8.9, 8.3, 8.3], "abs": [-1555045, -1177592, 797478, -699298, 1050773, -1237058, 2014490, 260822], "del": [null, 2040799, 319396, 867396, 252725, 567360, 1695928, 220031], "inv": 316276230, "invPrev": 314907078, "uc": 2505560, "ucPrev": 1918253, "ytdAbs": 2344001, "ytdDel": 1915959, "prevYtdDel": 1186792, "partial": true, "subs": [["Port Region", 98252766, 11.6, null, null, 18.85], ["Greater I-80 Corridor", 86310086, 7.1, null, null, 16.28], ["Meadowlands", 82207459, 8.1, null, null, 18.46], ["Central Bergen", 21526216, 8.6, null, null, 16.05], ["Northern Bergen", 17133977, 5.5, null, null, 16.26], ["Suburban Essex", 10459804, 3.2, null, null, 16.48], ["GW Bridge Market", 3751211, 7.2, null, null, 17.72], ["Route 23 North", 572179, 14.2, null, null, 13]], "note": {"en": "Northern New Jersey occupancy was 91.7% in Q2 2026, unchanged from Q1. Net absorption slowed to 0.26M sf after a strong first quarter, bringing the year to 2.34M sf, ahead of the 1.92M sf delivered. Asking rents are the highest of the five metros at $17.72/sf/yr, up 1.6% QoQ but 5.8% below Q3 2024. The Port Region is the weak spot at 11.6% vacancy.", "zh": "2026年第二季度，北新泽西出租率为91.7%，与上季度持平。继一季度强劲表现后，本季净吸纳量放缓至26万平方英尺，今年累计234万平方英尺，高于同期交付的192万平方英尺。平均要价租金为五个城市中最高，达17.72美元/平方英尺/年，环比上涨1.6%，但较2024年第三季度下降5.8%。港口区（Port Region）空置率达11.6%，是主要薄弱子市场。"}}], "meta": {"period": "2026-Q2", "generated": "2026-09-27", "us_vac": 6.9}};
+const QTR = DATA.quarters, METROS = DATA.metros, META = DATA.meta;
+const US = {vac: META.us_vac};
+const T = {
+ en:{brandSub:"Market intelligence",navOverview:"Market overview",navMap:"Map board",titleMap:"Map board",subtitleMap:"Submarket heat map of supply, vacancy and rent",mapTitle:"Submarket heat map",mapSub:"Where supply, vacancy and rent are concentrated in this metro. Hover a circle for its numbers; click to open that submarket.",heatmap:"Heat map",mSupply:"Supply",mVac:"Vacancy",mRent:"Rent",opacity:"Opacity",rankTitle:"Submarkets",mapNote:"Circles are approximate submarket centers and gray squares are reference points. The map has no streets or boundaries; it shows where each submarket sits relative to the others.",lgSupplyL:"Existing supply (M sf)",lgVacL:"Vacancy (%)",lgRentL:"Asking rent ($/sf/yr)",rankBy:"ranked by",occAxis:"Occupancy (%)",rentAxis:"Rent ($/sf/yr)",srcShort:"Source: Cushman & Wakefield",lang:"Language",
+  title:"Market overview",subtitle:"Stock, rent, supply and absorption for each metro and submarket",cityLevel:"City level",subLevel:"Submarket level",city:"City",submarket:"Submarket",period:"Report period",
+  aiTitle:"This quarter's market update (AI)",aiGen:"Drafted by Claude from the figures on this page · {date}",
+  qRentTitle:"Quarterly average rent and rent change",qRentSub:"Last 8 quarters: bars show asking rent ($/sf/yr); numbers on top are the quarter-over-quarter change. Bars for the same quarter as the latest are highlighted for year-over-year comparison.",
+  lgQ2:"Same quarter as latest",lgOther:"Other quarters",saTitle:"Quarterly new supply vs net absorption",saSub:"Million sf per quarter; the line above the bars is occupancy (%). Absorption is as first reported each quarter.",
+  lgSupply:"New supply",lgAbs:"Net absorption",lgOcc:"Occupancy (%)",yRentTitle:"Annual average rent and rent change",yRentSub:"Year-end asking rent ($/sf/yr) and the current quarter; numbers on top are the change from the previous bar.",
+  subTblTitle:"Submarket overview",subTblSub:"Click a row to open that submarket.",subCmpTitle:"Submarket comparison: rent and occupancy (this quarter)",subCmpSub:"Bars show asking rent ($/sf/yr); the line above is occupancy (%).",lgRent:"Average rent",vsMetro:"Compared with the metro",
+  kStock:"Market stock (M sf)",kRent:"Average rent ($/sf/yr)",kDel:"New supply this year (M sf)",kAbs:"Net absorption this year (M sf)",kOcc:"Occupancy",kUc:"Future supply (M sf)",
+  qoq:"QoQ",vsH1:"vs same period last year",ptsQoq:"pts QoQ",
+  thSub:"Submarket",thStock:"Existing stock (M sf)",thUc:"Under construction (M sf)",thOcc:"Occupancy",thRent:"Asking rent ($/sf/yr)",thAbs:"Net absorption YTD (M sf)",
+  sStock:"Stock (M sf)",sShare:"of metro stock",sOcc:"Occupancy",sRent:"Asking rent ($/sf/yr)",sAbs:"Net absorption YTD (M sf)",sUc:"Under construction (M sf)",sUcPct:"of submarket stock",vsMetroShort:"vs metro",noData:"not reported",
+  readStrong:"Strong",readMixed:"Mixed",readWeak:"Weak",readLabel:"Market read",
+  supplyNa:"Q3'24 supply not available",mf:"MF",
+  foot:"Sources: Cushman & Wakefield U.S. Industrial MarketBeat national tables ({range}) and {period} local MarketBeats for submarkets. Rents are overall asking rents on an annual basis; submarket rents follow each local report (monthly figures × 12; rows marked MF are manufacturing). Figures are as reported each quarter; Cushman revises earlier quarters later, and the latest quarter is preliminary. Submarket columns that did not add up to the metro total are left out. Not investment advice."},
+ zh:{brandSub:"市场情报",navOverview:"市场总览",navMap:"地图看板",titleMap:"地图看板",subtitleMap:"子市场供应、空置与租金热力图",mapTitle:"子市场热力图",mapSub:"查看供应、空置和租金在城市内的分布。悬停圆点查看数据，点击进入该子市场。",heatmap:"热力图",mSupply:"供应",mVac:"空置",mRent:"租金",opacity:"不透明度",rankTitle:"子市场",mapNote:"圆点为子市场的大致中心位置，灰色方块为参照地标。地图不含街道和边界，仅用于显示各子市场的相对位置。",lgSupplyL:"现有供应（百万平方英尺）",lgVacL:"空置率（%）",lgRentL:"要价租金（美元/平方英尺/年）",rankBy:"排序：",occAxis:"出租率（%）",rentAxis:"租金（美元/平方英尺/年）",srcShort:"数据来源：Cushman & Wakefield",lang:"语言",
+  title:"市场总览",subtitle:"城市与子市场的库存、租金、供应与去化",cityLevel:"城市层面",subLevel:"子市场层面",city:"城市",submarket:"子市场",period:"报告期",
+  aiTitle:"本季度市场动态（AI）",aiGen:"由Claude根据本页数据撰写 · {date}",
+  qRentTitle:"季度平均租金与租金增幅",qRentSub:"近8个季度：柱状图为平均要价租金（美元/平方英尺/年），顶部数字为租金环比增幅（%）。与最新季度同期的柱体高亮，便于同比比较。",
+  lgQ2:"与最新季度同期",lgOther:"其他季度",saTitle:"季度新增供应 vs 净吸纳量",saSub:"单位：百万平方英尺/季度；柱上方折线为出租率（%）。净吸纳量为各季度首次公布值。",
+  lgSupply:"新增供应",lgAbs:"净吸纳量",lgOcc:"出租率（%）",yRentTitle:"年度平均租金与租金增幅",yRentSub:"年末要价租金（美元/平方英尺/年）及本季度；顶部数字为较前一柱的增幅。",
+  subTblTitle:"各子市场概览",subTblSub:"点击任一行查看该子市场。",subCmpTitle:"子市场对比：租金与出租率（本季度）",subCmpSub:"柱状图为要价租金（美元/平方英尺/年），上方折线为出租率（%）。",lgRent:"平均租金",vsMetro:"与城市整体对比",
+  kStock:"市场存量（百万平方英尺）",kRent:"平均租金（美元/平方英尺/年）",kDel:"当年新增供应（百万平方英尺）",kAbs:"当年净吸纳量（百万平方英尺）",kOcc:"出租率",kUc:"未来市场供应（百万平方英尺）",
+  qoq:"环比",vsH1:"较去年同期",ptsQoq:"个百分点 环比",
+  thSub:"子市场",thStock:"现有市场供量（百万平方英尺）",thUc:"在建面积（百万平方英尺）",thOcc:"出租率",thRent:"要价租金（美元/平方英尺/年）",thAbs:"年内净吸纳（百万平方英尺）",
+  sStock:"存量（百万平方英尺）",sShare:"占城市存量",sOcc:"出租率",sRent:"要价租金（美元/平方英尺/年）",sAbs:"年内净吸纳（百万平方英尺）",sUc:"在建面积（百万平方英尺）",sUcPct:"占子市场存量",vsMetroShort:"较城市",noData:"未披露",
+  readStrong:"强",readMixed:"分化",readWeak:"弱",readLabel:"市场判断",
+  supplyNa:"2024年三季度供应数据暂缺",mf:"制造业",
+  foot:"数据来源：Cushman & Wakefield 美国工业 MarketBeat 全国统计表（{range}），子市场数据来自{period}各地MarketBeat。租金为年化整体要价租金；子市场租金沿用各地报告口径（月租金×12；标注“制造业”的为制造业租金）。数据为各季度首次公布值，Cushman此后会修订，最新季度为初步数据。与城市总数不符的子市场数据暂不显示。不构成投资建议。"}
+};
+let lang = "en", level = "city", cityId = "la", subIdx = 0;
+try{ const s = JSON.parse(localStorage.getItem("imm2")||"{}"); if(s.lang) lang=s.lang; if(METROS.some(m=>m.id===s.city)) cityId=s.city; }catch(e){}
+const t = k => T[lang][k] ?? T.en[k];
+const save = () => { try{ localStorage.setItem("imm2", JSON.stringify({lang, city:cityId})); }catch(e){} };
+const M1 = v => (v/1e6).toFixed(1), M2 = v => (v/1e6).toFixed(2);
+const sg = (v,d=1) => (v>0?"+":v<0?"−":"") + Math.abs(v).toFixed(d);
+const pct = (a,b) => (a/b-1)*100;
+const yoyIdx = QTR.length-5;
+const nm = m => m[lang];
+const ICON = {
+  good:'<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 6.3l2.2 2.2 4.8-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+  warn:'<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 2.5v4.2M6 9.2v.1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
+  bad:'<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M3 3l6 6M9 3l-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>'};
+
+function read(m){
+  const vac = m.vac[QTR.length-1], p = {good:2,warn:1,bad:0};
+  const rentYoY = pct(m.rent[QTR.length-1], m.rent[yoyIdx]);
+  const c = [ vac<=US.vac-1?"good":vac<=US.vac+1?"warn":"bad",
+    m.ytdAbs/m.ytdDel>=1?"good":m.ytdAbs/m.ytdDel>=.5?"warn":"bad",
+    rentYoY>=3?"good":rentYoY>=-3?"warn":"bad",
+    m.uc/m.inv*100<=1.5?"good":m.uc/m.inv*100<=2.5?"warn":"bad" ];
+  const s = c.reduce((a,x)=>a+p[x],0)/8;
+  return s>=.75?"good":s>=.5?"warn":"bad";
+}
+const cur = () => METROS.find(m=>m.id===cityId);
+
+/* ---------- tooltip ---------- */
+const tip = document.getElementById("tip");
+document.addEventListener("mousemove", e=>{
+  const h = e.target.closest && e.target.closest("[data-tip]");
+  if (!h){ tip.hidden = true; return; }
+  tip.textContent = h.getAttribute("data-tip"); tip.hidden = false;
+  const x = Math.min(e.clientX+12, window.innerWidth - tip.offsetWidth - 8);
+  tip.style.left = x+"px"; tip.style.top = (e.clientY-34)+"px";
+});
+
+/* ---------- charts ---------- */
+function niceMax(v){ const e = Math.pow(10, Math.floor(Math.log10(v))); const f = v/e; return (f<=1?1:f<=2?2:f<=2.5?2.5:f<=5?5:10)*e; }
+function rentBars(svg, labels, vals, opts){
+  const W = opts.w || 1000, H = opts.h || 280, L = 40, R = 12, T = 44, B = 30;
+  const max = niceMax(Math.max(...vals)*1.08), y = v => T + (1 - v/max)*(H-T-B);
+  const bw = Math.min(30, (W-L-R)/labels.length*0.42), step = (W-L-R)/labels.length;
+  let g = "";
+  for (let i=0;i<=4;i++){ const v = max*i/4, yy = y(v); g += `<line x1="${L}" x2="${W-R}" y1="${yy}" y2="${yy}" stroke="${i?'#E8ECEC':'#9AA4A8'}" ${i?'stroke-dasharray="3 3"':''}/><text x="${L-6}" y="${yy+4}" text-anchor="end">${v.toFixed(v<10&&max<20?1:0)}</text>`; }
+  labels.forEach((lb,i)=>{
+    const cx = L + step*(i+.5), v = vals[i], top = y(v), hl = opts.hl(i);
+    const chg = i>0 ? pct(v, vals[i-1]) : null;
+    g += `<g data-tip="${lb}: $${v.toFixed(2)}${chg!=null?` (${sg(chg)}%)`:''}"><rect class="hit" x="${cx-step/2}" y="${T-30}" width="${step}" height="${H-T-B+30}"/>
+      <path d="M${cx-bw/2},${y(0)} V${top+3} Q${cx-bw/2},${top} ${cx-bw/2+3},${top} H${cx+bw/2-3} Q${cx+bw/2},${top} ${cx+bw/2},${top+3} V${y(0)} Z" fill="${hl?'var(--teal)':'var(--tan)'}"/>
+      <text x="${cx}" y="${top-6}" text-anchor="middle" class="v">${v.toFixed(2)}</text>
+      ${chg!=null?`<text x="${cx}" y="${T-26}" text-anchor="middle" class="chg">${sg(chg)}%</text>`:''}
+      <text x="${cx}" y="${H-10}" text-anchor="middle">${lb}</text></g>`;
+  });
+  svg.setAttribute("viewBox",`0 0 ${W} ${H}`); svg.innerHTML = g;
+}
+function supplyAbs(svg, m){
+  const n = QTR.length, W = 600, H = 330, L = 40, R = 10, band = 70, T = 30 + band, B = 30;
+  const sup = m.del.map(v=>v==null?null:v/1e6), ab = m.abs.map(v=>v/1e6), occ = m.vac.map(v=>100-v);
+  const all = [...sup.filter(v=>v!=null), ...ab];
+  const rawHi = Math.max(...all,0.5), rawLo = Math.min(0,...all); const tstep = niceMax((rawHi-rawLo)/4); const hi = Math.ceil(rawHi/tstep)*tstep, lo = Math.floor(rawLo/tstep)*tstep;
+  const y = v => T + (hi - v)/(hi-lo)*(H-T-B), step = (W-L-R)/n, bw = Math.min(22, step*0.32);
+  const oMin = Math.floor(Math.min(...occ)-1), oMax = Math.ceil(Math.max(...occ)+1), oy = v => 30 + (oMax - v)/(oMax-oMin)*(band-24);
+  let g = "";
+  const ticks = Math.round((hi-lo)/tstep); for (let i=0;i<=ticks;i++){ const v = lo + tstep*i, yy = y(v); g += `<line x1="${L}" x2="${W-R}" y1="${yy}" y2="${yy}" stroke="${Math.abs(v)<1e-9?'#9AA4A8':'#E8ECEC'}" ${Math.abs(v)<1e-9?'':'stroke-dasharray="3 3"'}/><text x="${L-6}" y="${yy+4}" text-anchor="end">${+v.toFixed(1)}</text>`; }
+  let path = "";
+  QTR.forEach((q,i)=>{
+    const cx = L + step*(i+.5);
+    const bar = (v, x, col) => { if (v==null) return `<text x="${x}" y="${y(0)-4}" text-anchor="middle" style="font-size:10px">n/a</text>`; const a = y(Math.max(v,0)), b = y(Math.min(v,0)); return `<rect x="${x-bw/2}" y="${a}" width="${bw}" height="${Math.max(1,b-a)}" rx="2" fill="${col}"/><text x="${x}" y="${v>=0?a-5:b+13}" text-anchor="middle" class="v" style="font-size:10.5px">${v.toFixed(1)}</text>`; };
+    g += `<g data-tip="${q}: ${t('lgSupply')} ${sup[i]==null?'n/a':sup[i].toFixed(2)+'M'} · ${t('lgAbs')} ${sg(ab[i],2)}M · ${t('lgOcc')} ${occ[i].toFixed(1)}%"><rect class="hit" x="${cx-step/2}" y="20" width="${step}" height="${H-20-B}"/>
+      ${bar(sup[i], cx-bw/2-2, 'var(--deep)')}${bar(ab[i], cx+bw/2+2, 'var(--lime)')}
+      <text x="${cx}" y="${H-10}" text-anchor="middle">${q}</text>
+      <text x="${cx}" y="16" text-anchor="middle" class="chg">${occ[i].toFixed(1)}%</text></g>`;
+    path += (i?"L":"M") + cx + "," + oy(occ[i]);
+  });
+  g += `<path d="${path}" fill="none" stroke="var(--blue)" stroke-width="2"/>` + QTR.map((q,i)=>`<circle cx="${L+step*(i+.5)}" cy="${oy(occ[i])}" r="3.5" fill="var(--blue)" stroke="#fff" stroke-width="1.5"/>`).join("");
+  g += `<line x1="${L}" x2="${W-R}" y1="${30+band-10}" y2="${30+band-10}" stroke="#EEF1F1"/>`;
+  svg.setAttribute("viewBox",`0 0 ${W} ${H}`); svg.innerHTML = g;
+}
+function subCompare(svg, m, selIdx){
+  // Bars = asking rent on the left axis; line = occupancy on the right axis.
+  const subs = m.subs, n = subs.length, L = 58, R = 58, T = 34, B = 78, H = 390;
+  const step = Math.max(40, Math.min(150, 900/n)), W = Math.max(1000, L+R+step*n), PH = H-T-B;
+  const rents = subs.map(s=>s[5]).filter(v=>v!=null);
+  const rStep = niceMax(Math.max(...rents)*1.5/5), rMax = rStep*5, y = v => T + (1-v/rMax)*PH;
+  const occ = subs.map(s=>100-s[2]), oMinRaw = Math.min(...occ);
+  const oStep = oMinRaw > 90 ? 2 : oMinRaw > 80 ? 4 : 5;
+  const oLo = Math.max(0, 100 - oStep*5 * Math.ceil((100 - (2*oMinRaw-100)) / (oStep*5))), oy = v => T + (100-v)/(100-oLo)*PH;
+  const oTick = (100-oLo)/5;
+  const bw = Math.min(28, step*.42);
+  let g = "";
+  for (let i=0;i<=5;i++){
+    const yy = T + PH*i/5;
+    g += `<line x1="${L}" x2="${W-R}" y1="${yy}" y2="${yy}" stroke="${i===5?'#9AA4A8':'#E8ECEC'}" ${i===5?'':'stroke-dasharray="3 3"'}/>`;
+    g += `<text x="${L-8}" y="${yy+4}" text-anchor="end">${(rMax - rStep*i).toFixed(rStep<1?1:0)}</text>`;
+    g += `<text x="${W-R+8}" y="${yy+4}" text-anchor="start" style="fill:var(--blue)">${(100 - oTick*i).toFixed(oTick<1?1:0)}%</text>`;
+  }
+  g += `<text x="${L-40}" y="${T-18}" text-anchor="start" style="font-weight:600">${t('rentAxis')}</text>`;
+  g += `<text x="${W-R+40}" y="${T-18}" text-anchor="end" style="font-weight:600;fill:var(--blue)">${t('occAxis')}</text>`;
+  let path = "";
+  subs.forEach((s,i)=>{
+    const cx = L + step*(i+.5), v = s[5], sel = i===selIdx, top = v==null ? y(0) : y(v);
+    g += `<g data-tip="${s[0]}: ${v==null?'rent n/a':'$'+v.toFixed(2)} · ${t('lgOcc')} ${occ[i].toFixed(1)}%">
+      <rect class="hit" x="${cx-step/2}" y="${T}" width="${step}" height="${H-T}"/>
+      ${v==null?`<text x="${cx}" y="${y(0)-4}" text-anchor="middle" style="font-size:10px">n/a</text>`:`<path d="M${cx-bw/2},${y(0)} V${top+3} Q${cx-bw/2},${top} ${cx-bw/2+3},${top} H${cx+bw/2-3} Q${cx+bw/2},${top} ${cx+bw/2},${top+3} V${y(0)} Z" fill="${sel?'var(--deep)':'var(--teal)'}"/><text x="${cx}" y="${top-6}" text-anchor="middle" class="v" style="font-size:10.5px">${v.toFixed(2)}</text>`}
+      <text transform="translate(${cx+4},${H-B+16}) rotate(-35)" text-anchor="end" style="${sel?'fill:var(--ink);font-weight:700':''}">${s[0]}</text></g>`;
+    path += (i?"L":"M") + cx + "," + oy(occ[i]);
+  });
+  g += `<path d="${path}" fill="none" stroke="var(--blue)" stroke-width="2"/>`;
+  g += subs.map((s,i)=>{ const cx=L+step*(i+.5), cy=oy(occ[i]); return `<circle cx="${cx}" cy="${cy}" r="${i===selIdx?5:3.5}" fill="var(--blue)" stroke="#fff" stroke-width="1.5"/><text x="${cx}" y="${cy-9}" text-anchor="middle" class="chg" style="font-size:10.5px;paint-order:stroke;stroke:#fff;stroke-width:3px">${occ[i].toFixed(1)}%</text>`; }).join("");
+  svg.setAttribute("viewBox",`0 0 ${W} ${H}`); svg.innerHTML = g;
+}
+
+/* ---------- map board ---------- */
+// Approximate submarket centers (lat, lng) and reference points. Positions are for relative placement only.
+const GEO = {
+  la:{subs:{"LA South":[33.87,-118.25],"San Gabriel Valley":[34.02,-117.95],"LA West":[34.01,-118.43],"LA Central":[34.00,-118.19],"Mid-Counties":[33.92,-118.05],"LA North":[34.24,-118.45]},
+      marks:[["Downtown LA","洛杉矶市中心",34.05,-118.25],["Ports of LA / Long Beach","洛杉矶/长滩港",33.75,-118.23],["LAX","洛杉矶国际机场",33.94,-118.41]]},
+  ie:{subs:{"IE West":[34.05,-117.55],"IE East":[33.93,-117.25],"IE South":[33.60,-117.15]},
+      marks:[["Ontario Airport","安大略机场",34.056,-117.60],["Riverside","里弗赛德",33.95,-117.40],["San Bernardino","圣贝纳迪诺",34.11,-117.29],["Temecula","蒂梅丘拉",33.49,-117.15]]},
+  dfw:{subs:{"DFW Airport":[32.90,-97.04],"Brookhollow/Trinity":[32.81,-96.86],"Walnut Hill/Stemmons":[32.88,-96.89],"North Dallas/Metropolitan":[32.95,-96.83],"Valwood/N Stemmons":[32.96,-96.90],"Far North/I-35":[33.05,-96.99],"Richardson/Plano":[33.00,-96.72],"Allen/McKinney":[33.15,-96.65],"Central Dallas":[32.78,-96.79],"Garland":[32.91,-96.64],"Mesquite":[32.78,-96.60],"East Dallas Suburbs":[32.85,-96.45],"Pinnacle/Turnpike":[32.75,-96.92],"Redbird":[32.68,-96.87],"South Dallas":[32.62,-96.75],"Ellis County":[32.45,-96.85],"Great Southwest":[32.75,-97.03],"North Fort Worth":[32.87,-97.29],"Alliance":[32.98,-97.32],"Central Fort Worth":[32.75,-97.33],"East Fort Worth":[32.76,-97.20],"West Fort Worth":[32.75,-97.45],"South Fort Worth":[32.63,-97.32],"Johnson County":[32.40,-97.35]},
+      marks:[["Downtown Dallas","达拉斯市中心",32.78,-96.80],["Downtown Fort Worth","沃斯堡市中心",32.755,-97.33],["DFW Airport","DFW机场",32.90,-97.04]]},
+  chi:{subs:{"Central DuPage":[41.90,-88.15],"Chicago North":[41.93,-87.70],"Chicago South":[41.76,-87.63],"Interstate 39":[41.92,-89.07],"Interstate 55":[41.62,-88.10],"Interstate 80":[41.45,-88.15],"Lake County":[42.30,-87.90],"McHenry County":[42.30,-88.40],"Northeast DuPage":[41.97,-88.00],"Northern Cook":[42.05,-87.80],"Northern Fox Valley":[42.05,-88.30],"Northwest Cook":[42.05,-88.07],"Northwest Indiana":[41.55,-87.35],"O'Hare":[41.98,-87.90],"South Suburbs":[41.55,-87.70],"Southeast Wisconsin":[42.70,-87.90],"Southern DuPage":[41.78,-88.05],"Southern Fox Valley":[41.75,-88.30],"Western Cook":[41.85,-87.85],"Western Kane":[41.95,-88.55]},
+      marks:[["The Loop","芝加哥市中心",41.88,-87.63],["O'Hare Airport","奥黑尔机场",41.98,-87.90],["Joliet","乔利埃特",41.52,-88.08]]},
+  nnj:{subs:{"Northern Bergen":[40.97,-74.05],"GW Bridge Market":[40.85,-73.97],"Central Bergen":[40.90,-74.08],"Meadowlands":[40.80,-74.10],"Port Region":[40.68,-74.16],"Suburban Essex":[40.80,-74.28],"Greater I-80 Corridor":[40.88,-74.40],"Route 23 North":[41.05,-74.35]},
+      marks:[["Newark Airport","纽瓦克机场",40.69,-74.17],["Port Newark–Elizabeth","纽瓦克–伊丽莎白港",40.68,-74.14],["Midtown Manhattan","曼哈顿中城",40.75,-73.98]]}
+};
+let view = "overview", metric = "supply", heatOpacity = 0.7, heatOn = true, mapHits = [];
+const METRIC = {
+  supply:{get:s=>s[1], fmt:v=>(v/1e6).toFixed(1)+"M", lg:"lgSupplyL"},
+  vac:{get:s=>s[2], fmt:v=>v.toFixed(1)+"%", lg:"lgVacL"},
+  rent:{get:s=>s[5], fmt:v=>"$"+v.toFixed(2), lg:"lgRentL"}
+};
+const RAMP = [[255,241,168],[249,178,74],[229,103,44],[179,42,36],[110,20,20]];
+function rampColor(t){ const x = Math.min(.999, Math.max(0,t))*(RAMP.length-1), i = Math.floor(x), f = x-i, a = RAMP[i], b = RAMP[i+1]; return [0,1,2].map(k=>Math.round(a[k]+(b[k]-a[k])*f)); }
+
+function renderMap(){
+  const m = cur(), geo = GEO[m.id] || {subs:{},marks:[]}, M = METRIC[metric];
+  const wrap = document.getElementById("mapWrap"), cv = document.getElementById("mapCanvas");
+  const Wp = Math.max(300, wrap.clientWidth), Hp = Math.round(Math.min(560, Math.max(340, Wp*0.66))), dpr = window.devicePixelRatio || 1;
+  cv.width = Wp*dpr; cv.height = Hp*dpr; cv.style.height = Hp+"px";
+  const ctx = cv.getContext("2d"); ctx.setTransform(dpr,0,0,dpr,0,0);
+  const pts = m.subs.map((s,i)=>({s, i, ll:geo.subs[s[0]]})).filter(p=>p.ll);
+  const all = [...pts.map(p=>p.ll), ...geo.marks.map(k=>[k[2],k[3]])];
+  const lats = all.map(a=>a[0]), lngs = all.map(a=>a[1]);
+  const lat0 = (Math.min(...lats)+Math.max(...lats))/2, kx = Math.cos(lat0*Math.PI/180);
+  const spanX = (Math.max(...lngs)-Math.min(...lngs))*kx || .1, spanY = (Math.max(...lats)-Math.min(...lats)) || .1;
+  const pad = 60, sc = Math.min((Wp-2*pad)/spanX, (Hp-2*pad)/spanY);
+  const cxm = (Math.max(...lngs)+Math.min(...lngs))/2, cym = lat0;
+  const P = (lat,lng) => [Wp/2 + (lng-cxm)*kx*sc, Hp/2 - (lat-cym)*sc];
+  // ground + grid
+  ctx.fillStyle = "#F2F5F4"; ctx.fillRect(0,0,Wp,Hp);
+  ctx.strokeStyle = "#E3E8E7"; ctx.lineWidth = 1;
+  const gstep = spanY > 1 ? .25 : .1;
+  for (let la = Math.floor((cym-Hp/2/sc)/gstep)*gstep; la < cym+Hp/2/sc; la += gstep){ const [,yy] = P(la,cxm); ctx.beginPath(); ctx.moveTo(0,yy); ctx.lineTo(Wp,yy); ctx.stroke(); }
+  for (let lo = Math.floor((cxm-Wp/2/sc/kx)/gstep)*gstep; lo < cxm+Wp/2/sc/kx; lo += gstep){ const [xx] = P(cym,lo); ctx.beginPath(); ctx.moveTo(xx,0); ctx.lineTo(xx,Hp); ctx.stroke(); }
+  // heat layer
+  const vals = pts.map(p=>M.get(p.s)).filter(v=>v!=null), vmin = Math.min(...vals), vmax = Math.max(...vals);
+  const norm = v => vmax===vmin ? 1 : .15 + .85*(v-vmin)/(vmax-vmin);
+  if (heatOn && vals.length){
+    const off = document.createElement("canvas"); off.width = cv.width; off.height = cv.height;
+    const o = off.getContext("2d"); o.setTransform(dpr,0,0,dpr,0,0);
+    const rad = Math.max(38, Math.min(95, .085*sc));
+    pts.forEach(p=>{ const v = M.get(p.s); if (v==null) return; const [x,y] = P(...p.ll), a = norm(v);
+      const gr = o.createRadialGradient(x,y,0,x,y,rad); gr.addColorStop(0,`rgba(0,0,0,${a})`); gr.addColorStop(1,"rgba(0,0,0,0)");
+      o.fillStyle = gr; o.beginPath(); o.arc(x,y,rad,0,Math.PI*2); o.fill(); });
+    const img = o.getImageData(0,0,off.width,off.height), d = img.data;
+    for (let k=0;k<d.length;k+=4){ const a = d[k+3]/255; if (!a) continue; const c = rampColor(a); d[k]=c[0]; d[k+1]=c[1]; d[k+2]=c[2]; d[k+3]=Math.round(Math.min(1,a*1.5)*heatOpacity*255); }
+    o.setTransform(1,0,0,1,0,0); o.putImageData(img,0,0);
+    ctx.save(); ctx.setTransform(1,0,0,1,0,0); ctx.drawImage(off,0,0); ctx.restore();
+  }
+  // reference points
+  ctx.font = "11.5px " + getComputedStyle(document.body).fontFamily;
+  const placed = [];
+  const halo = (txt,x,y,col,weight) => {
+    ctx.font = `${weight||400} 11.5px ` + getComputedStyle(document.body).fontFamily;
+    const w = ctx.measureText(txt).width, box = [x-2, y-11, x+w+2, y+3];
+    if (box[2] > Wp-4 || placed.some(b=>!(box[2]<b[0]||box[0]>b[2]||box[3]<b[1]||box[1]>b[3]))) return false;
+    placed.push(box); ctx.lineWidth = 3.5; ctx.strokeStyle = "rgba(255,255,255,.95)"; ctx.strokeText(txt,x,y); ctx.fillStyle = col; ctx.fillText(txt,x,y); return true; };
+  const markPts = geo.marks.map(k=>{ const [x,y] = P(k[2],k[3]); ctx.fillStyle = "#6B7478"; ctx.fillRect(x-3.5,y-3.5,7,7); return [k,x,y]; });
+  // submarket circles
+  const ranked = [...pts].filter(p=>M.get(p.s)!=null).sort((a,b)=>M.get(b.s)-M.get(a.s));
+  const labelSet = new Set((pts.length<=10 ? pts : ranked.slice(0,7)).map(p=>p.i));
+  mapHits = [];
+  pts.forEach(p=>{ const [x,y] = P(...p.ll), sel = p.i===subIdx && level==="sub";
+    ctx.beginPath(); ctx.arc(x,y,sel?7:5.5,0,Math.PI*2); ctx.fillStyle = "#fff"; ctx.fill(); ctx.lineWidth = 2; ctx.strokeStyle = "#16191B"; ctx.stroke();
+    mapHits.push({x,y,p});
+  });
+  // labels: highest-ranked submarkets first, then reference points, skipping any that would overlap
+  ranked.concat(pts.filter(p=>M.get(p.s)==null)).filter(p=>labelSet.has(p.i)).forEach(p=>{ const [x,y] = P(...p.ll), v = M.get(p.s);
+    halo(`${p.s[0]}${v==null?'':' · '+M.fmt(v)}`, x+9, y-7, "#16191B", 600) || halo(`${p.s[0]}${v==null?'':' · '+M.fmt(v)}`, x+9, y+16, "#16191B", 600); });
+  markPts.forEach(([k,x,y])=>{ halo(lang==='zh'?k[1]:k[0], x+7, y+4, "#4B5559"); });
+  // legend
+  document.getElementById("mapLegend").innerHTML = heatOn && vals.length ? `<span>${t(M.lg)}</span><span class="ramp"></span><span class="ends"><span>${M.fmt(vmin)}</span><span>${M.fmt(vmax)}</span></span>` : "";
+  document.getElementById("mapLegend").hidden = !(heatOn && vals.length);
+  // ranked list
+  document.getElementById("rankNote").textContent = `${t('rankBy')} ${t({supply:'mSupply',vac:'mVac',rent:'mRent'}[metric])}`;
+  document.getElementById("mapList").innerHTML = ranked.map(p=>{ const v = M.get(p.s); return `<li tabindex="0" data-i="${p.i}"><span>${p.s[0]}</span><b>${M.fmt(v)}</b><i><span style="width:${(v/vmax*100).toFixed(1)}%"></span></i></li>`; }).join("") +
+    pts.filter(p=>M.get(p.s)==null).map(p=>`<li tabindex="0" data-i="${p.i}"><span>${p.s[0]}</span><b class="muted">n/a</b></li>`).join("");
+  document.querySelectorAll("#mapList li").forEach(li=>{
+    const go = ()=>{ subIdx = +li.dataset.i; setLevel("sub"); };
+    li.addEventListener("click", go); li.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); go(); }});
+  });
+}
+function mapHit(e){
+  const cv = document.getElementById("mapCanvas"), r = cv.getBoundingClientRect(), x = e.clientX - r.left, y = e.clientY - r.top;
+  let best = null, bd = 14;
+  mapHits.forEach(h=>{ const d = Math.hypot(h.x-x, h.y-y); if (d < bd){ bd = d; best = h; } });
+  return best;
+}
+(function(){
+  const cv = document.getElementById("mapCanvas");
+  cv.addEventListener("mousemove", e=>{
+    const h = mapHit(e);
+    if (h){ const s = h.p.s; cv.dataset.tip = `${s[0]} · ${t('mSupply')} ${(s[1]/1e6).toFixed(1)}M sf · ${t('mVac')} ${s[2].toFixed(1)}% · ${t('mRent')} ${s[5]==null?'n/a':'$'+s[5].toFixed(2)}`; cv.style.cursor = "pointer"; }
+    else { delete cv.dataset.tip; cv.style.cursor = "default"; }
+  });
+  cv.addEventListener("click", e=>{ const h = mapHit(e); if (h){ subIdx = h.p.i; setLevel("sub"); } });
+  document.querySelectorAll("#metricSeg button").forEach(b=>b.addEventListener("click", ()=>{
+    metric = b.dataset.metric; document.querySelectorAll("#metricSeg button").forEach(x=>x.setAttribute("aria-pressed", x===b)); renderMap(); }));
+  document.getElementById("heatOp").addEventListener("input", e=>{ heatOpacity = +e.target.value/100; document.getElementById("heatOpV").textContent = e.target.value+"%"; renderMap(); });
+  document.getElementById("heatOn").addEventListener("change", e=>{ heatOn = e.target.checked; renderMap(); });
+  let rt; window.addEventListener("resize", ()=>{ clearTimeout(rt); rt = setTimeout(()=>{ if (view==="map") renderMap(); }, 150); });
+})();
+
+/* ---------- rendering ---------- */
+function kpi(l, v, d, cls){ return `<div class="kpi"><span class="l">${l}</span><span class="v">${v}</span><span class="d ${cls||'flat'}">${d||'&nbsp;'}</span></div>`; }
+const arrow = v => v>0.0001 ? "↑ " : v<-0.0001 ? "↓ " : "";
+const dir = v => v>0.0001 ? "up" : v<-0.0001 ? "down" : "flat";
+
+function renderCity(){
+  const m = cur();
+  const rq = pct(m.rent[QTR.length-1], m.rent[QTR.length-2]), sq = pct(m.inv, m.invPrev), uq = pct(m.uc, m.ucPrev), dq = pct(m.ytdDel, m.prevYtdDel), oq = (m.vac[QTR.length-2]-m.vac[QTR.length-1]);
+  document.getElementById("kpis").innerHTML =
+    kpi(t('kStock'), (m.inv/1e6).toLocaleString(undefined,{maximumFractionDigits:1}), `${arrow(sq)}${Math.abs(sq).toFixed(2)}% ${t('qoq')}`, dir(sq)) +
+    kpi(t('kRent'), m.rent[QTR.length-1].toFixed(2), `${arrow(rq)}${Math.abs(rq).toFixed(2)}% ${t('qoq')}`, dir(rq)) +
+    kpi(t('kDel'), M2(m.ytdDel), `${arrow(dq)}${Math.abs(dq).toFixed(1)}% ${t('vsH1')}`, "flat") +
+    kpi(t('kAbs'), sg(m.ytdAbs/1e6,2), `${lang==='zh'?'本季':'This quarter'} ${sg(m.abs[QTR.length-1]/1e6,2)}`, dir(m.ytdAbs)) +
+    kpi(t('kOcc'), (100-m.vac[QTR.length-1]).toFixed(1)+"%", `${arrow(oq)}${Math.abs(oq).toFixed(1)} ${t('ptsQoq')}`, dir(oq)) +
+    kpi(t('kUc'), M2(m.uc), `${arrow(uq)}${Math.abs(uq).toFixed(1)}% ${t('qoq')}`, "flat");
+  document.getElementById("aiText").textContent = m.note[lang];
+  rentBars(document.getElementById("qRent"), QTR, m.rent, {hl:i=>QTR[i].slice(0,2)===QTR[QTR.length-1].slice(0,2)});
+  const q4 = QTR.map((q,i)=>q.startsWith("Q4")?i:-1).filter(i=>i>=0 && i<QTR.length-1).slice(-2);
+  const yrs = q4.map(i=>"20"+QTR[i].slice(-2)), last = QTR.length-1;
+  rentBars(document.getElementById("yRent"), [...yrs.map(y=>lang==='zh'?`${y}年末`:`${y} (Q4)`), lang==='zh'?`本季 ${QTR[last]}`:QTR[last]], [...q4.map(i=>m.rent[i]), m.rent[last]], {hl:i=>i===q4.length, w:460, h:330});
+  supplyAbs(document.getElementById("supAbs"), m);
+  renderSubTable(m);
+  subCompare(document.getElementById("subCmp"), m, -1);
+}
+function renderSubTable(m){
+  const maxInv = Math.max(...m.subs.map(s=>s[1]));
+  document.getElementById("subHead").innerHTML = `<tr><th>${t('thSub')}</th><th>${t('thStock')}</th><th>${t('thUc')}</th><th>${t('thOcc')}</th><th>${t('thRent')}</th><th>${t('thAbs')}</th></tr>`;
+  document.getElementById("subBody").innerHTML = m.subs.map((s,i)=>`<tr class="clk" tabindex="0" data-i="${i}">
+    <td>${s[0]}</td>
+    <td><div class="stockcell">${M2(s[1])}<span class="bar"><i style="width:${(s[1]/maxInv*100).toFixed(1)}%"></i></span></div></td>
+    <td>${s[4]==null?'<span class="muted">—</span>':M2(s[4])}</td>
+    <td>${(100-s[2]).toFixed(1)}%</td>
+    <td>${s[5]==null?'<span class="muted">n/a</span>':s[5].toFixed(2)}${s[6]?` <span class="muted">${t('mf')}</span>`:''}</td>
+    <td>${s[3]==null?'<span class="muted">—</span>':`<span class="${s[3]<0?'neg':''}">${sg(s[3]/1e6,2)}</span>`}</td></tr>`).join("");
+  document.querySelectorAll("#subBody tr").forEach(tr=>{
+    const go = ()=>{ subIdx = +tr.dataset.i; setLevel("sub"); };
+    tr.addEventListener("click", go);
+    tr.addEventListener("keydown", e=>{ if(e.key==="Enter"||e.key===" "){ e.preventDefault(); go(); }});
+  });
+}
+function renderSub(){
+  const m = cur(), s = m.subs[subIdx];
+  const occ = 100-s[2], mOcc = 100-m.vac[QTR.length-1], share = s[1]/m.inv*100;
+  const rentRank = [...m.subs].filter(x=>x[5]!=null).sort((a,b)=>b[5]-a[5]).indexOf(s)+1;
+  const occRank = [...m.subs].sort((a,b)=>a[2]-b[2]).indexOf(s)+1, n = m.subs.length;
+  const rentVs = s[5]==null ? null : pct(s[5], m.rent[QTR.length-1]);
+  document.getElementById("subKpis").innerHTML =
+    kpi(t('sStock'), M1(s[1]), `${share.toFixed(1)}% ${t('sShare')}`, "flat") +
+    kpi(t('sOcc'), occ.toFixed(1)+"%", `${arrow(occ-mOcc)}${Math.abs(occ-mOcc).toFixed(1)} pts ${t('vsMetroShort')}`, dir(occ-mOcc)) +
+    kpi(t('sRent'), s[5]==null?"n/a":s[5].toFixed(2), rentVs==null?t('noData'):`${arrow(rentVs)}${Math.abs(rentVs).toFixed(1)}% ${t('vsMetroShort')}`, rentVs==null?"flat":dir(rentVs)) +
+    kpi(t('sAbs'), s[3]==null?"—":sg(s[3]/1e6,2), s[3]==null?t('noData'):"", s[3]==null?"flat":dir(s[3])) +
+    kpi(t('sUc'), s[4]==null?"—":M2(s[4]), s[4]==null?t('noData'):`${(s[4]/s[1]*100).toFixed(1)}% ${t('sUcPct')}`, "flat") +
+    kpi(t('kRent').replace(/\(.*\)|（.*）/,'') + (lang==='zh'?'（城市）':'(metro)'), m.rent[QTR.length-1].toFixed(2), "", "flat");
+  const soft = s[2] >= m.vac[QTR.length-1]+2 || (s[3]!=null && s[3]<0 && s[2]>m.vac[QTR.length-1]);
+  const tight = s[2] <= m.vac[QTR.length-1]-1.5 && (s[3]==null || s[3]>=0);
+  const txt = lang==='zh'
+    ? `${s[0]}是${nm(m)}${n}个子市场之一，存量${M1(s[1])}百万平方英尺，占城市存量的${share.toFixed(1)}%。出租率${occ.toFixed(1)}%，${occ>=mOcc?'高于':'低于'}城市平均${Math.abs(occ-mOcc).toFixed(1)}个百分点，在${n}个子市场中排名第${occRank}。` +
+      (s[5]!=null?`要价租金${s[5].toFixed(2)}美元/平方英尺/年，${rentVs>=0?'高于':'低于'}城市平均${Math.abs(rentVs).toFixed(1)}%，租金排名第${rentRank}。`:'') +
+      (s[3]!=null?`今年累计净吸纳${sg(s[3]/1e6,2)}百万平方英尺，在建${M2(s[4])}百万平方英尺。`:'') +
+      (soft?'整体判断：偏弱。':tight?'整体判断：偏紧。':'整体判断：与城市整体基本一致。')
+    : `${s[0]} is one of ${n} submarkets in ${nm(m)}, with ${M1(s[1])}M sf of stock (${share.toFixed(1)}% of the metro). Occupancy is ${occ.toFixed(1)}%, ${Math.abs(occ-mOcc).toFixed(1)} points ${occ>=mOcc?'above':'below'} the metro average, ranking ${occRank} of ${n}. ` +
+      (s[5]!=null?`Asking rent is $${s[5].toFixed(2)}/sf/yr, ${Math.abs(rentVs).toFixed(1)}% ${rentVs>=0?'above':'below'} the metro average (rank ${rentRank} for rent). `:'') +
+      (s[3]!=null?`Net absorption this year is ${sg(s[3]/1e6,2)}M sf, with ${M2(s[4])}M sf under construction. `:'') +
+      (soft?'Read: softer than the metro.':tight?'Read: tighter than the metro.':'Read: in line with the metro.');
+  document.getElementById("subText").textContent = txt;
+  subCompare(document.getElementById("subCmp2"), m, subIdx);
+}
+
+function fillSelects(){
+  const cs = document.getElementById("citySel");
+  cs.innerHTML = METROS.map(m=>`<option value="${m.id}" ${m.id===cityId?'selected':''}>${m.zh} / ${m.en}</option>`).join("");
+  const ss = document.getElementById("subSel"), m = cur();
+  if (subIdx >= m.subs.length) subIdx = 0;
+  ss.innerHTML = m.subs.map((s,i)=>`<option value="${i}" ${i===subIdx?'selected':''}>${s[0]}</option>`).join("");
+}
+function renderRead(){
+  const r = read(cur()), lab = {good:t('readStrong'),warn:t('readMixed'),bad:t('readWeak')}[r];
+  document.getElementById("readChip").innerHTML = `<span class="field">${t('readLabel')} <span class="chip ${r}">${ICON[r]}${lab}</span></span>`;
+}
+function applyLang(){
+  document.documentElement.lang = lang==='zh'?'zh-CN':'en';
+  document.querySelectorAll("[data-i]").forEach(el=>{ el.textContent = t(el.dataset.i); });
+  document.getElementById("lang-zh").setAttribute("aria-pressed", lang==='zh');
+  document.getElementById("lang-en").setAttribute("aria-pressed", lang==='en');
+  document.getElementById("foot").textContent = t('foot').replace("{range}", `${QTR[0]}–${QTR[QTR.length-1]}`).replace("{period}", META.period);
+  document.getElementById("periodVal").textContent = META.period;
+  document.querySelectorAll('[data-i="aiGen"]').forEach(el=>el.textContent = t('aiGen').replace("{date}", META.generated));
+}
+function setView(v){
+  view = v;
+  document.getElementById("nav-ov").toggleAttribute("aria-current", v==="overview");
+  document.getElementById("nav-map").toggleAttribute("aria-current", v==="map");
+  if (v==="overview") document.getElementById("nav-ov").setAttribute("aria-current","page"); else document.getElementById("nav-map").setAttribute("aria-current","page");
+  document.querySelector(".top h1").dataset.i = v==="map" ? "titleMap" : "title";
+  document.querySelector(".top p").dataset.i = v==="map" ? "subtitleMap" : "subtitle";
+  document.getElementById("levelSeg").hidden = v==="map";
+  document.getElementById("mapView").hidden = v!=="map";
+  if (v==="map"){
+    document.getElementById("cityView").style.display = "none"; document.getElementById("subView").style.display = "none";
+    document.getElementById("subField").hidden = true;
+    render();
+  } else setLevel(level);
+}
+function setLevel(lv){
+  level = lv; view = "overview";
+  document.getElementById("nav-ov").setAttribute("aria-current","page"); document.getElementById("nav-map").removeAttribute("aria-current");
+  document.querySelector(".top h1").dataset.i = "title"; document.querySelector(".top p").dataset.i = "subtitle";
+  document.getElementById("levelSeg").hidden = false; document.getElementById("mapView").hidden = true;
+  document.getElementById("lv-city").setAttribute("aria-pressed", lv==="city");
+  document.getElementById("lv-sub").setAttribute("aria-pressed", lv==="sub");
+  document.getElementById("cityView").hidden = lv!=="city";
+  document.getElementById("subView").hidden = lv!=="sub";
+  document.getElementById("cityView").style.display = lv==="city" ? "contents" : "none";
+  document.getElementById("subView").style.display = lv==="sub" ? "contents" : "none";
+  document.getElementById("subField").hidden = lv!=="sub";
+  render();
+  if (lv==="sub") window.scrollTo({top:0});
+}
+function render(){ applyLang(); fillSelects(); renderRead(); if (view==="map") renderMap(); else if (level==="city") renderCity(); else renderSub(); }
+
+document.getElementById("nav-ov").onclick = ()=>setView("overview");
+document.getElementById("nav-map").onclick = ()=>setView("map");
+document.getElementById("lv-city").onclick = ()=>setLevel("city");
+document.getElementById("lv-sub").onclick = ()=>setLevel("sub");
+document.getElementById("citySel").onchange = e=>{ cityId = e.target.value; subIdx = 0; save(); render(); };
+document.getElementById("subSel").onchange = e=>{ subIdx = +e.target.value; render(); };
+document.getElementById("lang-zh").onclick = ()=>{ lang="zh"; save(); render(); };
+document.getElementById("lang-en").onclick = ()=>{ lang="en"; save(); render(); };
+setLevel("city");
+</script>
+
+</body>
+</html>

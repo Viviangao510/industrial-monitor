@@ -1,0 +1,32 @@
+{
+ "la": {
+  "2026Q2": {
+   "en": "In Q2 2026, Los Angeles occupancy rose to 95.8%, up 0.4 points from Q1, as tenants absorbed a net 1.23M sf, led by LA South (+1.98M sf in the quarter). Asking rents slipped to $15.83/sf/yr, down 1.4% QoQ and 8.3% below Q3 2024. New supply is thin: 0.76M sf delivered this year and 4.4M sf under construction, about 0.6% of stock. With little new space coming, occupancy should stay tight, and rents look more likely to stabilize than to rebound soon.",
+   "zh": "2026年第二季度，洛杉矶工业市场出租率回升至95.8%，环比上升0.4个百分点，本季净吸纳量约123万平方英尺，主要来自LA South（本季+198万平方英尺）。平均要价租金为15.83美元/平方英尺/年，环比下降1.4%，较2024年第三季度累计下降8.3%。新增供应有限，今年新交付76万平方英尺，在建约443万平方英尺，约占存量0.6%。由于未来供应较少，预计出租率保持高位，租金短期以企稳为主，较难快速反弹。"
+  }
+ },
+ "ie": {
+  "2026Q2": {
+   "en": "Inland Empire occupancy fell to 91.2% in Q2 2026, down 0.3 points QoQ, as tenants vacated a net 1.54M sf (3.81M sf so far this year). IE West accounts for most of this year's losses, and IE East has the highest vacancy at 11.0%. Asking rents edged up 0.9% QoQ to $12.40/sf/yr but are 9.4% below a year ago and 17% below Q3 2024. Space under construction rose to 4.8M sf from 3.3M sf last quarter. Rents are likely to stay under pressure until move-outs slow.",
+   "zh": "2026年第二季度，内陆帝国出租率降至91.2%，环比下降0.3个百分点，本季净退租约154万平方英尺（今年累计净退租381万平方英尺）。今年的退租主要集中在IE West，IE East空置率最高，达11.0%。平均要价租金环比微升0.9%至12.40美元/平方英尺/年，但同比下降9.4%，较2024年第三季度下降17%。在建面积由上季度的334万平方英尺增至480万平方英尺。在退租放缓之前，租金预计仍承压。"
+  }
+ },
+ "dfw": {
+  "2026Q2": {
+   "en": "Dallas–Fort Worth absorbed a net 9.03M sf in Q2 2026, the most of the five metros, lifting occupancy to 91.9% (up 0.2 points QoQ). Asking rents rose 5.5% QoQ to $9.19/sf/yr, 14.4% above a year ago. Alliance led demand with 3.9M sf absorbed this year. The risk is supply: 13.6M sf has been delivered this year and 29.8M sf is still under construction, about 2.9% of stock, so further occupancy gains depend on demand keeping pace.",
+   "zh": "2026年第二季度，达拉斯–沃斯堡净吸纳量达903万平方英尺，为五个城市中最高，带动出租率升至91.9%（环比上升0.2个百分点）。平均要价租金环比上涨5.5%至9.19美元/平方英尺/年，同比上涨14.4%。Alliance子市场需求最强，今年累计净吸纳390万平方英尺。主要风险在供应端：今年已交付1,363万平方英尺，仍有2,983万平方英尺在建，约占存量2.9%，出租率能否继续上升取决于需求能否跟上。"
+  }
+ },
+ "chi": {
+  "2026Q2": {
+   "en": "Chicago occupancy held at 95.2% in Q2 2026, and vacancy has stayed between 4.7% and 4.8% for two years. Net absorption picked up to 3.30M sf in the quarter, and asking rents rose 2.0% QoQ to $7.55/sf/yr, roughly flat versus a year ago. Construction has doubled from 6.8M sf a year ago to 13.9M sf, a third of it in the I-80 corridor. The market is steady, but the growing pipeline is worth watching.",
+   "zh": "2026年第二季度，芝加哥出租率保持在95.2%，空置率过去两年一直维持在4.7%至4.8%之间。本季净吸纳量回升至330万平方英尺，平均要价租金环比上涨2.0%至7.55美元/平方英尺/年，与去年同期基本持平。在建面积由一年前的681万平方英尺翻倍至1,386万平方英尺，其中约三分之一位于I-80走廊。市场整体稳健，但在建规模上升值得关注。"
+  }
+ },
+ "nnj": {
+  "2026Q2": {
+   "en": "Northern New Jersey occupancy was 91.7% in Q2 2026, unchanged from Q1. Net absorption slowed to 0.26M sf after a strong first quarter, bringing the year to 2.34M sf, ahead of the 1.92M sf delivered. Asking rents are the highest of the five metros at $17.72/sf/yr, up 1.6% QoQ but 5.8% below Q3 2024. The Port Region is the weak spot at 11.6% vacancy.",
+   "zh": "2026年第二季度，北新泽西出租率为91.7%，与上季度持平。继一季度强劲表现后，本季净吸纳量放缓至26万平方英尺，今年累计234万平方英尺，高于同期交付的192万平方英尺。平均要价租金为五个城市中最高，达17.72美元/平方英尺/年，环比上涨1.6%，但较2024年第三季度下降5.8%。港口区（Port Region）空置率达11.6%，是主要薄弱子市场。"
+  }
+ }
+}

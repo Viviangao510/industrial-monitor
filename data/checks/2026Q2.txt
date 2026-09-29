@@ -1,0 +1,9 @@
+Checks for 2026Q2
+
+PROBLEMS (look at these before publishing):
+  - Northern New Jersey: submarket vacancy averages 8.6% vs city 8.3%.
+
+NOTES (usually fine):
+  - Los Angeles: this year's quarters add up to -939,770 sf but year to date is 1,760,037 sf. Cushman probably revised an earlier quarter; the charts show quarters as first reported.
+  - Inland Empire: this year's quarters add up to -4,910,842 sf but year to date is -3,811,447 sf. Cushman probably revised an earlier quarter; the charts show quarters as first reported.
+  - Chicago: this year's quarters add up to 4,375,569 sf but year to date is 5,135,293 sf. Cushman probably revised an earlier quarter; the charts show quarters as first reported.
