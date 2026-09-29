@@ -1,7 +1,7 @@
 <title>Industrial Market Monitor</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
 /* Single light look, matching the reference dashboard. All colors set explicitly. */
 :root{
@@ -11,8 +11,8 @@
   --teal:#4DA38F; --tan:#C8A07A; --deep:#1C5B57; --lime:#A7C83B; --blue:#1F6C8D;
   --up:#2A8A5A; --down:#C23B32;
   --good:#2C7A4B; --good-bg:#E0F1E6; --warn:#9A6414; --warn-bg:#F7ECD6; --bad:#A93838; --bad-bg:#F7E1DF;
-  --body:"Source Sans 3","Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
-  --display:"Archivo","Noto Sans SC","Helvetica Neue",Arial,sans-serif;
+  --body:"Source Sans 3",system-ui,sans-serif;
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
   color-scheme:light;
 }
@@ -33,10 +33,6 @@ body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:14.
 .nav button small{margin-left:auto;font-size:10.5px;border:1px solid #2A3134;border-radius:3px;padding:0 5px;color:var(--side-dim)}
 .nav button:focus-visible{outline:2px solid var(--teal)}
 .side-foot{margin-top:auto;padding:12px 18px 0;border-top:1px solid #1C2224;display:flex;flex-direction:column;gap:10px;font-size:12px;color:var(--side-dim)}
-.lang{display:flex;align-items:center;gap:8px}
-.lang button{all:unset;cursor:pointer;padding:1px 8px;border-radius:4px;color:var(--side-dim);font-size:12.5px}
-.lang button[aria-pressed="true"]{background:#2A3134;color:#fff}
-.lang button:focus-visible{outline:2px solid var(--teal)}
 @media (max-width:860px){
   .app{grid-template-columns:1fr}
   .side{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;padding:12px 16px;gap:8px}
@@ -145,7 +141,6 @@ tbody tr.clk:hover td{background:#F6F8F8}
     </nav>
     <div class="side-foot">
       <span class="who" data-i="srcShort">Source: Cushman &amp; Wakefield</span>
-      <div class="lang"><span data-i="lang">Language</span><button id="lang-zh" aria-pressed="false">中</button><span>/</span><button id="lang-en" aria-pressed="true">EN</button></div>
     </div>
   </aside>
 
@@ -253,7 +248,7 @@ const DATA = /*__DATA__*/null;
 const QTR = DATA.quarters, METROS = DATA.metros, META = DATA.meta;
 const US = {vac: META.us_vac};
 const T = {
- en:{brandSub:"Market intelligence",navOverview:"Market overview",navMap:"Map board",titleMap:"Map board",subtitleMap:"Submarket heat map of supply, vacancy and rent",mapTitle:"Submarket heat map",mapSub:"Where supply, vacancy and rent are concentrated in this metro. Hover a circle for its numbers; click to open that submarket.",heatmap:"Heat map",mSupply:"Supply",mVac:"Vacancy",mRent:"Rent",opacity:"Opacity",rankTitle:"Submarkets",mapNote:"Circles are approximate submarket centers and gray squares are reference points. The map has no streets or boundaries; it shows where each submarket sits relative to the others.",lgSupplyL:"Existing supply (M sf)",lgVacL:"Vacancy (%)",lgRentL:"Asking rent ($/sf/yr)",rankBy:"ranked by",occAxis:"Occupancy (%)",rentAxis:"Rent ($/sf/yr)",srcShort:"Source: Cushman & Wakefield",lang:"Language",
+ en:{brandSub:"Market intelligence",navOverview:"Market overview",navMap:"Map board",titleMap:"Map board",subtitleMap:"Submarket heat map of supply, vacancy and rent",mapTitle:"Submarket heat map",mapSub:"Where supply, vacancy and rent are concentrated in this metro. Hover a circle for its numbers; click to open that submarket.",heatmap:"Heat map",mSupply:"Supply",mVac:"Vacancy",mRent:"Rent",opacity:"Opacity",rankTitle:"Submarkets",mapNote:"Circles are approximate submarket centers and gray squares are reference points. The map has no streets or boundaries; it shows where each submarket sits relative to the others.",lgSupplyL:"Existing supply (M sf)",lgVacL:"Vacancy (%)",lgRentL:"Asking rent ($/sf/yr)",rankBy:"ranked by",occAxis:"Occupancy (%)",rentAxis:"Rent ($/sf/yr)",srcShort:"Source: Cushman & Wakefield",
   title:"Market overview",subtitle:"Stock, rent, supply and absorption for each metro and submarket",cityLevel:"City level",subLevel:"Submarket level",city:"City",submarket:"Submarket",period:"Report period",
   aiTitle:"This quarter's market update (AI)",aiGen:"Drafted by Claude from the figures on this page · {date}",
   qRentTitle:"Quarterly average rent and rent change",qRentSub:"Last 8 quarters: bars show asking rent ($/sf/yr); numbers on top are the quarter-over-quarter change. Bars for the same quarter as the latest are highlighted for year-over-year comparison.",
@@ -266,31 +261,17 @@ const T = {
   sStock:"Stock (M sf)",sShare:"of metro stock",sOcc:"Occupancy",sRent:"Asking rent ($/sf/yr)",sAbs:"Net absorption YTD (M sf)",sUc:"Under construction (M sf)",sUcPct:"of submarket stock",vsMetroShort:"vs metro",noData:"not reported",
   readStrong:"Strong",readMixed:"Mixed",readWeak:"Weak",readLabel:"Market read",
   supplyNa:"Q3'24 supply not available",mf:"MF",
-  foot:"Sources: Cushman & Wakefield U.S. Industrial MarketBeat national tables ({range}) and {period} local MarketBeats for submarkets. Rents are overall asking rents on an annual basis; submarket rents follow each local report (monthly figures × 12; rows marked MF are manufacturing). Figures are as reported each quarter; Cushman revises earlier quarters later, and the latest quarter is preliminary. Submarket columns that did not add up to the metro total are left out. Not investment advice."},
- zh:{brandSub:"市场情报",navOverview:"市场总览",navMap:"地图看板",titleMap:"地图看板",subtitleMap:"子市场供应、空置与租金热力图",mapTitle:"子市场热力图",mapSub:"查看供应、空置和租金在城市内的分布。悬停圆点查看数据，点击进入该子市场。",heatmap:"热力图",mSupply:"供应",mVac:"空置",mRent:"租金",opacity:"不透明度",rankTitle:"子市场",mapNote:"圆点为子市场的大致中心位置，灰色方块为参照地标。地图不含街道和边界，仅用于显示各子市场的相对位置。",lgSupplyL:"现有供应（百万平方英尺）",lgVacL:"空置率（%）",lgRentL:"要价租金（美元/平方英尺/年）",rankBy:"排序：",occAxis:"出租率（%）",rentAxis:"租金（美元/平方英尺/年）",srcShort:"数据来源：Cushman & Wakefield",lang:"语言",
-  title:"市场总览",subtitle:"城市与子市场的库存、租金、供应与去化",cityLevel:"城市层面",subLevel:"子市场层面",city:"城市",submarket:"子市场",period:"报告期",
-  aiTitle:"本季度市场动态（AI）",aiGen:"由Claude根据本页数据撰写 · {date}",
-  qRentTitle:"季度平均租金与租金增幅",qRentSub:"近8个季度：柱状图为平均要价租金（美元/平方英尺/年），顶部数字为租金环比增幅（%）。与最新季度同期的柱体高亮，便于同比比较。",
-  lgQ2:"与最新季度同期",lgOther:"其他季度",saTitle:"季度新增供应 vs 净吸纳量",saSub:"单位：百万平方英尺/季度；柱上方折线为出租率（%）。净吸纳量为各季度首次公布值。",
-  lgSupply:"新增供应",lgAbs:"净吸纳量",lgOcc:"出租率（%）",yRentTitle:"年度平均租金与租金增幅",yRentSub:"年末要价租金（美元/平方英尺/年）及本季度；顶部数字为较前一柱的增幅。",
-  subTblTitle:"各子市场概览",subTblSub:"点击任一行查看该子市场。",subCmpTitle:"子市场对比：租金与出租率（本季度）",subCmpSub:"柱状图为要价租金（美元/平方英尺/年），上方折线为出租率（%）。",lgRent:"平均租金",vsMetro:"与城市整体对比",
-  kStock:"市场存量（百万平方英尺）",kRent:"平均租金（美元/平方英尺/年）",kDel:"当年新增供应（百万平方英尺）",kAbs:"当年净吸纳量（百万平方英尺）",kOcc:"出租率",kUc:"未来市场供应（百万平方英尺）",
-  qoq:"环比",vsH1:"较去年同期",ptsQoq:"个百分点 环比",
-  thSub:"子市场",thStock:"现有市场供量（百万平方英尺）",thUc:"在建面积（百万平方英尺）",thOcc:"出租率",thRent:"要价租金（美元/平方英尺/年）",thAbs:"年内净吸纳（百万平方英尺）",
-  sStock:"存量（百万平方英尺）",sShare:"占城市存量",sOcc:"出租率",sRent:"要价租金（美元/平方英尺/年）",sAbs:"年内净吸纳（百万平方英尺）",sUc:"在建面积（百万平方英尺）",sUcPct:"占子市场存量",vsMetroShort:"较城市",noData:"未披露",
-  readStrong:"强",readMixed:"分化",readWeak:"弱",readLabel:"市场判断",
-  supplyNa:"2024年三季度供应数据暂缺",mf:"制造业",
-  foot:"数据来源：Cushman & Wakefield 美国工业 MarketBeat 全国统计表（{range}），子市场数据来自{period}各地MarketBeat。租金为年化整体要价租金；子市场租金沿用各地报告口径（月租金×12；标注“制造业”的为制造业租金）。数据为各季度首次公布值，Cushman此后会修订，最新季度为初步数据。与城市总数不符的子市场数据暂不显示。不构成投资建议。"}
+  foot:"Sources: Cushman & Wakefield U.S. Industrial MarketBeat national tables ({range}) and {period} local MarketBeats for submarkets. Rents are overall asking rents on an annual basis; submarket rents follow each local report (monthly figures × 12; rows marked MF are manufacturing). Figures are as reported each quarter; Cushman revises earlier quarters later, and the latest quarter is preliminary. Submarket columns that did not add up to the metro total are left out. Not investment advice."}
 };
-let lang = "en", level = "city", cityId = "la", subIdx = 0;
-try{ const s = JSON.parse(localStorage.getItem("imm2")||"{}"); if(s.lang) lang=s.lang; if(METROS.some(m=>m.id===s.city)) cityId=s.city; }catch(e){}
-const t = k => T[lang][k] ?? T.en[k];
-const save = () => { try{ localStorage.setItem("imm2", JSON.stringify({lang, city:cityId})); }catch(e){} };
+let level = "city", cityId = "la", subIdx = 0;
+try{ const s = JSON.parse(localStorage.getItem("imm2")||"{}"); if(METROS.some(m=>m.id===s.city)) cityId=s.city; }catch(e){}
+const t = k => T.en[k];
+const save = () => { try{ localStorage.setItem("imm2", JSON.stringify({city:cityId})); }catch(e){} };
 const M1 = v => (v/1e6).toFixed(1), M2 = v => (v/1e6).toFixed(2);
 const sg = (v,d=1) => (v>0?"+":v<0?"−":"") + Math.abs(v).toFixed(d);
 const pct = (a,b) => (a/b-1)*100;
 const yoyIdx = QTR.length-5;
-const nm = m => m[lang];
+const nm = m => m.en;
 const ICON = {
   good:'<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 6.3l2.2 2.2 4.8-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   warn:'<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 2.5v4.2M6 9.2v.1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
@@ -398,15 +379,15 @@ function subCompare(svg, m, selIdx){
 // Approximate submarket centers (lat, lng) and reference points. Positions are for relative placement only.
 const GEO = {
   la:{subs:{"LA South":[33.87,-118.25],"San Gabriel Valley":[34.02,-117.95],"LA West":[34.01,-118.43],"LA Central":[34.00,-118.19],"Mid-Counties":[33.92,-118.05],"LA North":[34.24,-118.45]},
-      marks:[["Downtown LA","洛杉矶市中心",34.05,-118.25],["Ports of LA / Long Beach","洛杉矶/长滩港",33.75,-118.23],["LAX","洛杉矶国际机场",33.94,-118.41]]},
+      marks:[["Downtown LA",34.05,-118.25],["Ports of LA / Long Beach",33.75,-118.23],["LAX",33.94,-118.41]]},
   ie:{subs:{"IE West":[34.05,-117.55],"IE East":[33.93,-117.25],"IE South":[33.60,-117.15]},
-      marks:[["Ontario Airport","安大略机场",34.056,-117.60],["Riverside","里弗赛德",33.95,-117.40],["San Bernardino","圣贝纳迪诺",34.11,-117.29],["Temecula","蒂梅丘拉",33.49,-117.15]]},
+      marks:[["Ontario Airport",34.056,-117.60],["Riverside",33.95,-117.40],["San Bernardino",34.11,-117.29],["Temecula",33.49,-117.15]]},
   dfw:{subs:{"DFW Airport":[32.90,-97.04],"Brookhollow/Trinity":[32.81,-96.86],"Walnut Hill/Stemmons":[32.88,-96.89],"North Dallas/Metropolitan":[32.95,-96.83],"Valwood/N Stemmons":[32.96,-96.90],"Far North/I-35":[33.05,-96.99],"Richardson/Plano":[33.00,-96.72],"Allen/McKinney":[33.15,-96.65],"Central Dallas":[32.78,-96.79],"Garland":[32.91,-96.64],"Mesquite":[32.78,-96.60],"East Dallas Suburbs":[32.85,-96.45],"Pinnacle/Turnpike":[32.75,-96.92],"Redbird":[32.68,-96.87],"South Dallas":[32.62,-96.75],"Ellis County":[32.45,-96.85],"Great Southwest":[32.75,-97.03],"North Fort Worth":[32.87,-97.29],"Alliance":[32.98,-97.32],"Central Fort Worth":[32.75,-97.33],"East Fort Worth":[32.76,-97.20],"West Fort Worth":[32.75,-97.45],"South Fort Worth":[32.63,-97.32],"Johnson County":[32.40,-97.35]},
-      marks:[["Downtown Dallas","达拉斯市中心",32.78,-96.80],["Downtown Fort Worth","沃斯堡市中心",32.755,-97.33],["DFW Airport","DFW机场",32.90,-97.04]]},
+      marks:[["Downtown Dallas",32.78,-96.80],["Downtown Fort Worth",32.755,-97.33],["DFW Airport",32.90,-97.04]]},
   chi:{subs:{"Central DuPage":[41.90,-88.15],"Chicago North":[41.93,-87.70],"Chicago South":[41.76,-87.63],"Interstate 39":[41.92,-89.07],"Interstate 55":[41.62,-88.10],"Interstate 80":[41.45,-88.15],"Lake County":[42.30,-87.90],"McHenry County":[42.30,-88.40],"Northeast DuPage":[41.97,-88.00],"Northern Cook":[42.05,-87.80],"Northern Fox Valley":[42.05,-88.30],"Northwest Cook":[42.05,-88.07],"Northwest Indiana":[41.55,-87.35],"O'Hare":[41.98,-87.90],"South Suburbs":[41.55,-87.70],"Southeast Wisconsin":[42.70,-87.90],"Southern DuPage":[41.78,-88.05],"Southern Fox Valley":[41.75,-88.30],"Western Cook":[41.85,-87.85],"Western Kane":[41.95,-88.55]},
-      marks:[["The Loop","芝加哥市中心",41.88,-87.63],["O'Hare Airport","奥黑尔机场",41.98,-87.90],["Joliet","乔利埃特",41.52,-88.08]]},
+      marks:[["The Loop",41.88,-87.63],["O'Hare Airport",41.98,-87.90],["Joliet",41.52,-88.08]]},
   nnj:{subs:{"Northern Bergen":[40.97,-74.05],"GW Bridge Market":[40.85,-73.97],"Central Bergen":[40.90,-74.08],"Meadowlands":[40.80,-74.10],"Port Region":[40.68,-74.16],"Suburban Essex":[40.80,-74.28],"Greater I-80 Corridor":[40.88,-74.40],"Route 23 North":[41.05,-74.35]},
-      marks:[["Newark Airport","纽瓦克机场",40.69,-74.17],["Port Newark–Elizabeth","纽瓦克–伊丽莎白港",40.68,-74.14],["Midtown Manhattan","曼哈顿中城",40.75,-73.98]]}
+      marks:[["Newark Airport",40.69,-74.17],["Port Newark–Elizabeth",40.68,-74.14],["Midtown Manhattan",40.75,-73.98]]}
 };
 let view = "overview", metric = "supply", heatOpacity = 0.7, heatOn = true, mapHits = [];
 const METRIC = {
@@ -424,7 +405,7 @@ function renderMap(){
   cv.width = Wp*dpr; cv.height = Hp*dpr; cv.style.height = Hp+"px";
   const ctx = cv.getContext("2d"); ctx.setTransform(dpr,0,0,dpr,0,0);
   const pts = m.subs.map((s,i)=>({s, i, ll:geo.subs[s[0]]})).filter(p=>p.ll);
-  const all = [...pts.map(p=>p.ll), ...geo.marks.map(k=>[k[2],k[3]])];
+  const all = [...pts.map(p=>p.ll), ...geo.marks.map(k=>[k[1],k[2]])];
   const lats = all.map(a=>a[0]), lngs = all.map(a=>a[1]);
   const lat0 = (Math.min(...lats)+Math.max(...lats))/2, kx = Math.cos(lat0*Math.PI/180);
   const spanX = (Math.max(...lngs)-Math.min(...lngs))*kx || .1, spanY = (Math.max(...lats)-Math.min(...lats)) || .1;
@@ -460,7 +441,7 @@ function renderMap(){
     const w = ctx.measureText(txt).width, box = [x-2, y-11, x+w+2, y+3];
     if (box[2] > Wp-4 || placed.some(b=>!(box[2]<b[0]||box[0]>b[2]||box[3]<b[1]||box[1]>b[3]))) return false;
     placed.push(box); ctx.lineWidth = 3.5; ctx.strokeStyle = "rgba(255,255,255,.95)"; ctx.strokeText(txt,x,y); ctx.fillStyle = col; ctx.fillText(txt,x,y); return true; };
-  const markPts = geo.marks.map(k=>{ const [x,y] = P(k[2],k[3]); ctx.fillStyle = "#6B7478"; ctx.fillRect(x-3.5,y-3.5,7,7); return [k,x,y]; });
+  const markPts = geo.marks.map(k=>{ const [x,y] = P(k[1],k[2]); ctx.fillStyle = "#6B7478"; ctx.fillRect(x-3.5,y-3.5,7,7); return [k,x,y]; });
   // submarket circles
   const ranked = [...pts].filter(p=>M.get(p.s)!=null).sort((a,b)=>M.get(b.s)-M.get(a.s));
   const labelSet = new Set((pts.length<=10 ? pts : ranked.slice(0,7)).map(p=>p.i));
@@ -472,7 +453,7 @@ function renderMap(){
   // labels: highest-ranked submarkets first, then reference points, skipping any that would overlap
   ranked.concat(pts.filter(p=>M.get(p.s)==null)).filter(p=>labelSet.has(p.i)).forEach(p=>{ const [x,y] = P(...p.ll), v = M.get(p.s);
     halo(`${p.s[0]}${v==null?'':' · '+M.fmt(v)}`, x+9, y-7, "#16191B", 600) || halo(`${p.s[0]}${v==null?'':' · '+M.fmt(v)}`, x+9, y+16, "#16191B", 600); });
-  markPts.forEach(([k,x,y])=>{ halo(lang==='zh'?k[1]:k[0], x+7, y+4, "#4B5559"); });
+  markPts.forEach(([k,x,y])=>{ halo(k[0], x+7, y+4, "#4B5559"); });
   // legend
   document.getElementById("mapLegend").innerHTML = heatOn && vals.length ? `<span>${t(M.lg)}</span><span class="ramp"></span><span class="ends"><span>${M.fmt(vmin)}</span><span>${M.fmt(vmax)}</span></span>` : "";
   document.getElementById("mapLegend").hidden = !(heatOn && vals.length);
@@ -518,14 +499,14 @@ function renderCity(){
     kpi(t('kStock'), (m.inv/1e6).toLocaleString(undefined,{maximumFractionDigits:1}), `${arrow(sq)}${Math.abs(sq).toFixed(2)}% ${t('qoq')}`, dir(sq)) +
     kpi(t('kRent'), m.rent[QTR.length-1].toFixed(2), `${arrow(rq)}${Math.abs(rq).toFixed(2)}% ${t('qoq')}`, dir(rq)) +
     kpi(t('kDel'), M2(m.ytdDel), `${arrow(dq)}${Math.abs(dq).toFixed(1)}% ${t('vsH1')}`, "flat") +
-    kpi(t('kAbs'), sg(m.ytdAbs/1e6,2), `${lang==='zh'?'本季':'This quarter'} ${sg(m.abs[QTR.length-1]/1e6,2)}`, dir(m.ytdAbs)) +
+    kpi(t('kAbs'), sg(m.ytdAbs/1e6,2), `This quarter ${sg(m.abs[QTR.length-1]/1e6,2)}`, dir(m.ytdAbs)) +
     kpi(t('kOcc'), (100-m.vac[QTR.length-1]).toFixed(1)+"%", `${arrow(oq)}${Math.abs(oq).toFixed(1)} ${t('ptsQoq')}`, dir(oq)) +
     kpi(t('kUc'), M2(m.uc), `${arrow(uq)}${Math.abs(uq).toFixed(1)}% ${t('qoq')}`, "flat");
-  document.getElementById("aiText").textContent = m.note[lang];
+  document.getElementById("aiText").textContent = m.note;
   rentBars(document.getElementById("qRent"), QTR, m.rent, {hl:i=>QTR[i].slice(0,2)===QTR[QTR.length-1].slice(0,2)});
   const q4 = QTR.map((q,i)=>q.startsWith("Q4")?i:-1).filter(i=>i>=0 && i<QTR.length-1).slice(-2);
   const yrs = q4.map(i=>"20"+QTR[i].slice(-2)), last = QTR.length-1;
-  rentBars(document.getElementById("yRent"), [...yrs.map(y=>lang==='zh'?`${y}年末`:`${y} (Q4)`), lang==='zh'?`本季 ${QTR[last]}`:QTR[last]], [...q4.map(i=>m.rent[i]), m.rent[last]], {hl:i=>i===q4.length, w:460, h:330});
+  rentBars(document.getElementById("yRent"), [...yrs.map(y=>`${y} (Q4)`), QTR[last]], [...q4.map(i=>m.rent[i]), m.rent[last]], {hl:i=>i===q4.length, w:460, h:330});
   supplyAbs(document.getElementById("supAbs"), m);
   renderSubTable(m);
   subCompare(document.getElementById("subCmp"), m, -1);
@@ -558,15 +539,10 @@ function renderSub(){
     kpi(t('sRent'), s[5]==null?"n/a":s[5].toFixed(2), rentVs==null?t('noData'):`${arrow(rentVs)}${Math.abs(rentVs).toFixed(1)}% ${t('vsMetroShort')}`, rentVs==null?"flat":dir(rentVs)) +
     kpi(t('sAbs'), s[3]==null?"—":sg(s[3]/1e6,2), s[3]==null?t('noData'):"", s[3]==null?"flat":dir(s[3])) +
     kpi(t('sUc'), s[4]==null?"—":M2(s[4]), s[4]==null?t('noData'):`${(s[4]/s[1]*100).toFixed(1)}% ${t('sUcPct')}`, "flat") +
-    kpi(t('kRent').replace(/\(.*\)|（.*）/,'') + (lang==='zh'?'（城市）':'(metro)'), m.rent[QTR.length-1].toFixed(2), "", "flat");
+    kpi(t('kRent').replace(/\(.*\)/,'') + '(metro)', m.rent[QTR.length-1].toFixed(2), "", "flat");
   const soft = s[2] >= m.vac[QTR.length-1]+2 || (s[3]!=null && s[3]<0 && s[2]>m.vac[QTR.length-1]);
   const tight = s[2] <= m.vac[QTR.length-1]-1.5 && (s[3]==null || s[3]>=0);
-  const txt = lang==='zh'
-    ? `${s[0]}是${nm(m)}${n}个子市场之一，存量${M1(s[1])}百万平方英尺，占城市存量的${share.toFixed(1)}%。出租率${occ.toFixed(1)}%，${occ>=mOcc?'高于':'低于'}城市平均${Math.abs(occ-mOcc).toFixed(1)}个百分点，在${n}个子市场中排名第${occRank}。` +
-      (s[5]!=null?`要价租金${s[5].toFixed(2)}美元/平方英尺/年，${rentVs>=0?'高于':'低于'}城市平均${Math.abs(rentVs).toFixed(1)}%，租金排名第${rentRank}。`:'') +
-      (s[3]!=null?`今年累计净吸纳${sg(s[3]/1e6,2)}百万平方英尺，在建${M2(s[4])}百万平方英尺。`:'') +
-      (soft?'整体判断：偏弱。':tight?'整体判断：偏紧。':'整体判断：与城市整体基本一致。')
-    : `${s[0]} is one of ${n} submarkets in ${nm(m)}, with ${M1(s[1])}M sf of stock (${share.toFixed(1)}% of the metro). Occupancy is ${occ.toFixed(1)}%, ${Math.abs(occ-mOcc).toFixed(1)} points ${occ>=mOcc?'above':'below'} the metro average, ranking ${occRank} of ${n}. ` +
+  const txt = `${s[0]} is one of ${n} submarkets in ${nm(m)}, with ${M1(s[1])}M sf of stock (${share.toFixed(1)}% of the metro). Occupancy is ${occ.toFixed(1)}%, ${Math.abs(occ-mOcc).toFixed(1)} points ${occ>=mOcc?'above':'below'} the metro average, ranking ${occRank} of ${n}. ` +
       (s[5]!=null?`Asking rent is $${s[5].toFixed(2)}/sf/yr, ${Math.abs(rentVs).toFixed(1)}% ${rentVs>=0?'above':'below'} the metro average (rank ${rentRank} for rent). `:'') +
       (s[3]!=null?`Net absorption this year is ${sg(s[3]/1e6,2)}M sf, with ${M2(s[4])}M sf under construction. `:'') +
       (soft?'Read: softer than the metro.':tight?'Read: tighter than the metro.':'Read: in line with the metro.');
@@ -576,7 +552,7 @@ function renderSub(){
 
 function fillSelects(){
   const cs = document.getElementById("citySel");
-  cs.innerHTML = METROS.map(m=>`<option value="${m.id}" ${m.id===cityId?'selected':''}>${m.zh} / ${m.en}</option>`).join("");
+  cs.innerHTML = METROS.map(m=>`<option value="${m.id}" ${m.id===cityId?'selected':''}>${m.en}</option>`).join("");
   const ss = document.getElementById("subSel"), m = cur();
   if (subIdx >= m.subs.length) subIdx = 0;
   ss.innerHTML = m.subs.map((s,i)=>`<option value="${i}" ${i===subIdx?'selected':''}>${s[0]}</option>`).join("");
@@ -586,10 +562,7 @@ function renderRead(){
   document.getElementById("readChip").innerHTML = `<span class="field">${t('readLabel')} <span class="chip ${r}">${ICON[r]}${lab}</span></span>`;
 }
 function applyLang(){
-  document.documentElement.lang = lang==='zh'?'zh-CN':'en';
   document.querySelectorAll("[data-i]").forEach(el=>{ el.textContent = t(el.dataset.i); });
-  document.getElementById("lang-zh").setAttribute("aria-pressed", lang==='zh');
-  document.getElementById("lang-en").setAttribute("aria-pressed", lang==='en');
   document.getElementById("foot").textContent = t('foot').replace("{range}", `${QTR[0]}–${QTR[QTR.length-1]}`).replace("{period}", META.period);
   document.getElementById("periodVal").textContent = META.period;
   document.querySelectorAll('[data-i="aiGen"]').forEach(el=>el.textContent = t('aiGen').replace("{date}", META.generated));
@@ -632,7 +605,5 @@ document.getElementById("lv-city").onclick = ()=>setLevel("city");
 document.getElementById("lv-sub").onclick = ()=>setLevel("sub");
 document.getElementById("citySel").onchange = e=>{ cityId = e.target.value; subIdx = 0; save(); render(); };
 document.getElementById("subSel").onchange = e=>{ subIdx = +e.target.value; render(); };
-document.getElementById("lang-zh").onclick = ()=>{ lang="zh"; save(); render(); };
-document.getElementById("lang-en").onclick = ()=>{ lang="en"; save(); render(); };
 setLevel("city");
 </script>

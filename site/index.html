@@ -6,7 +6,7 @@
 <title>Industrial Market Monitor</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&family=Noto+Sans+SC:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
 <style>
 /* Single light look, matching the reference dashboard. All colors set explicitly. */
 :root{
@@ -16,8 +16,8 @@
   --teal:#4DA38F; --tan:#C8A07A; --deep:#1C5B57; --lime:#A7C83B; --blue:#1F6C8D;
   --up:#2A8A5A; --down:#C23B32;
   --good:#2C7A4B; --good-bg:#E0F1E6; --warn:#9A6414; --warn-bg:#F7ECD6; --bad:#A93838; --bad-bg:#F7E1DF;
-  --body:"Source Sans 3","Noto Sans SC","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
-  --display:"Archivo","Noto Sans SC","Helvetica Neue",Arial,sans-serif;
+  --body:"Source Sans 3",system-ui,sans-serif;
+  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
   color-scheme:light;
 }
@@ -38,10 +38,6 @@ body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:14.
 .nav button small{margin-left:auto;font-size:10.5px;border:1px solid #2A3134;border-radius:3px;padding:0 5px;color:var(--side-dim)}
 .nav button:focus-visible{outline:2px solid var(--teal)}
 .side-foot{margin-top:auto;padding:12px 18px 0;border-top:1px solid #1C2224;display:flex;flex-direction:column;gap:10px;font-size:12px;color:var(--side-dim)}
-.lang{display:flex;align-items:center;gap:8px}
-.lang button{all:unset;cursor:pointer;padding:1px 8px;border-radius:4px;color:var(--side-dim);font-size:12.5px}
-.lang button[aria-pressed="true"]{background:#2A3134;color:#fff}
-.lang button:focus-visible{outline:2px solid var(--teal)}
 @media (max-width:860px){
   .app{grid-template-columns:1fr}
   .side{position:static;height:auto;flex-direction:row;flex-wrap:wrap;align-items:center;padding:12px 16px;gap:8px}
@@ -152,7 +148,6 @@ tbody tr.clk:hover td{background:#F6F8F8}
     </nav>
     <div class="side-foot">
       <span class="who" data-i="srcShort">Source: Cushman &amp; Wakefield</span>
-      <div class="lang"><span data-i="lang">Language</span><button id="lang-zh" aria-pressed="false">中</button><span>/</span><button id="lang-en" aria-pressed="true">EN</button></div>
     </div>
   </aside>
 
@@ -256,11 +251,11 @@ tbody tr.clk:hover td{background:#F6F8F8}
 
 <script>
 // Data is injected by scripts/build_site.py — do not edit by hand.
-const DATA = {"quarters": ["Q3'24", "Q4'24", "Q1'25", "Q2'25", "Q3'25", "Q4'25", "Q1'26", "Q2'26"], "metros": [{"id": "la", "en": "Los Angeles", "zh": "洛杉矶", "rent": [17.26, 16.72, 16.4, 16.1, 16.08, 15.96, 16.06, 15.83], "vac": [4.8, 4.9, 4.9, 4.8, 4.8, 4.6, 4.6, 4.2], "abs": [-3384155, -2135712, -729788, -1118053, 474742, -437789, -2173366, 1233596], "del": [null, 1368047, 1380614, 1044870, 1584407, 552374, 352707, 408737], "inv": 800488691, "invPrev": 802544883, "uc": 4433489, "ucPrev": 4354409, "ytdAbs": 1760037, "ytdDel": 761444, "prevYtdDel": 2425484, "partial": false, "subs": [["LA South", 192785851, 4.5, 2734389, 1284389, 16.44], ["San Gabriel Valley", 159165425, 2.9, 221591, 323744, 17.28], ["LA West", 8411143, 1.8, 73167, 0, 26.64], ["LA Central", 200520562, 4.3, 41471, 419591, 13.08], ["Mid-Counties", 89743084, 4.7, -39737, 185056, 15.72], ["LA North", 149862626, 4.7, -1270844, 2220709, 16.44]], "note": {"en": "In Q2 2026, Los Angeles occupancy rose to 95.8%, up 0.4 points from Q1, as tenants absorbed a net 1.23M sf, led by LA South (+1.98M sf in the quarter). Asking rents slipped to $15.83/sf/yr, down 1.4% QoQ and 8.3% below Q3 2024. New supply is thin: 0.76M sf delivered this year and 4.4M sf under construction, about 0.6% of stock. With little new space coming, occupancy should stay tight, and rents look more likely to stabilize than to rebound soon.", "zh": "2026年第二季度，洛杉矶工业市场出租率回升至95.8%，环比上升0.4个百分点，本季净吸纳量约123万平方英尺，主要来自LA South（本季+198万平方英尺）。平均要价租金为15.83美元/平方英尺/年，环比下降1.4%，较2024年第三季度累计下降8.3%。新增供应有限，今年新交付76万平方英尺，在建约443万平方英尺，约占存量0.6%。由于未来供应较少，预计出租率保持高位，租金短期以企稳为主，较难快速反弹。"}}, {"id": "ie", "en": "Inland Empire", "zh": "内陆帝国", "rent": [14.96, 14.76, 14.18, 13.69, 13.46, 13.19, 12.29, 12.4], "vac": [7.9, 8.0, 7.4, 7.9, 7.8, 8.1, 8.5, 8.8], "abs": [-3152890, -422480, 3160638, -1822576, 2993019, -1478658, -3366628, -1544214], "del": [null, 1453450, 1974506, 3429182, 4667296, 2649282, 39628, 1407921], "inv": 655580790, "invPrev": 655795540, "uc": 4797056, "ucPrev": 3339817, "ytdAbs": -3811447, "ytdDel": 1447549, "prevYtdDel": 5403688, "partial": false, "subs": [["IE West", 340428417, 7.4, -2652448, 2769439, 13.68], ["IE East", 279295604, 11, -1384116, 2027617, 11.4], ["IE South", 35856769, 4.5, 225117, 0, 13.56]], "note": {"en": "Inland Empire occupancy fell to 91.2% in Q2 2026, down 0.3 points QoQ, as tenants vacated a net 1.54M sf (3.81M sf so far this year). IE West accounts for most of this year's losses, and IE East has the highest vacancy at 11.0%. Asking rents edged up 0.9% QoQ to $12.40/sf/yr but are 9.4% below a year ago and 17% below Q3 2024. Space under construction rose to 4.8M sf from 3.3M sf last quarter. Rents are likely to stay under pressure until move-outs slow.", "zh": "2026年第二季度，内陆帝国出租率降至91.2%，环比下降0.3个百分点，本季净退租约154万平方英尺（今年累计净退租381万平方英尺）。今年的退租主要集中在IE West，IE East空置率最高，达11.0%。平均要价租金环比微升0.9%至12.40美元/平方英尺/年，但同比下降9.4%，较2024年第三季度下降17%。在建面积由上季度的334万平方英尺增至480万平方英尺。在退租放缓之前，租金预计仍承压。"}}, {"id": "dfw", "en": "Dallas–Fort Worth", "zh": "达拉斯–沃斯堡", "rent": [8.47, 8.62, 8.61, 8.03, 8.12, 8.38, 8.71, 9.19], "vac": [9.3, 9.7, 9.7, 9.4, 8.8, 8.2, 8.3, 8.1], "abs": [6296093, 3344396, 6468554, 6777754, 7747274, 8850033, 4280006, 9028165], "del": [null, 4158796, 5714530, 5403610, 3880839, 4630218, 5096936, 8529650], "inv": 1040462731, "invPrev": 1031921578, "uc": 29831149, "ucPrev": 31199625, "ytdAbs": 13626637, "ytdDel": 13626586, "prevYtdDel": 11118140, "partial": false, "subs": [["Great Southwest", 129812979, 7.6, 142078, 1966711, 9.32], ["DFW Airport", 109987100, 11.2, 350875, 3103143, 11.2], ["South Dallas", 101035211, 9.2, 2012660, 2284000, 6.55], ["Alliance", 87423839, 7.9, 3899391, 7657916, 9.31], ["North Fort Worth", 58996537, 8.1, 638783, 1539294, 8.76], ["Valwood/N Stemmons", 51579615, 4.2, -272223, 541107, 9.56], ["Brookhollow/Trinity", 49317551, 7, -72555, 0, 11.32], ["South Fort Worth", 49090241, 9.3, 1818861, 3464977, 7.37], ["Garland", 47228047, 6.3, 589402, 178978, 9.9], ["Richardson/Plano", 39655529, 7.2, 84651, 365667, 12.13], ["Far North/I-35", 37210903, 15.3, 857152, 237787, 9.05], ["Pinnacle/Turnpike", 33089490, 7.6, -220544, 467245, 7.77], ["Mesquite", 32263023, 8, 586082, 145940, 8.41], ["East Fort Worth", 27548947, 9.9, -129061, 0, 9.16], ["Ellis County", 27717609, 3.6, 295150, 2703641, 7.12], ["Redbird", 24929874, 2.3, 275539, 222520, 6.65], ["Walnut Hill/Stemmons", 23932405, 5.7, -153220, 0, 10.4], ["East Dallas Suburbs", 23358029, 7.9, 2392179, 1442721, 7.78], ["North Dallas/Metropolitan", 19682796, 11, 221210, 0, 10.25], ["Allen/McKinney", 18766761, 11.4, 328954, 1809502, 10.62], ["Central Fort Worth", 15848545, 2.6, -144285, 0, 7.23], ["Central Dallas", 12680994, 5.9, 0, 0, 9.64], ["Johnson County", 10594606, 1.4, -12250, 1700000, 17.27], ["West Fort Worth", 8712100, 13.9, 137808, 0, 9.57]], "note": {"en": "Dallas–Fort Worth absorbed a net 9.03M sf in Q2 2026, the most of the five metros, lifting occupancy to 91.9% (up 0.2 points QoQ). Asking rents rose 5.5% QoQ to $9.19/sf/yr, 14.4% above a year ago. Alliance led demand with 3.9M sf absorbed this year. The risk is supply: 13.6M sf has been delivered this year and 29.8M sf is still under construction, about 2.9% of stock, so further occupancy gains depend on demand keeping pace.", "zh": "2026年第二季度，达拉斯–沃斯堡净吸纳量达903万平方英尺，为五个城市中最高，带动出租率升至91.9%（环比上升0.2个百分点）。平均要价租金环比上涨5.5%至9.19美元/平方英尺/年，同比上涨14.4%。Alliance子市场需求最强，今年累计净吸纳390万平方英尺。主要风险在供应端：今年已交付1,363万平方英尺，仍有2,983万平方英尺在建，约占存量2.9%，出租率能否继续上升取决于需求能否跟上。"}}, {"id": "chi", "en": "Chicago", "zh": "芝加哥", "rent": [7.14, 7.17, 7.27, 7.52, 7.36, 7.16, 7.4, 7.55], "vac": [4.7, 4.7, 4.7, 4.8, 4.7, 4.7, 4.8, 4.8], "abs": [1929403, 555423, 1473928, 1726289, 1068560, 1081795, 1079092, 3296477], "del": [null, 3583320, 2465361, 3347933, 1726671, 1877309, 1826529, 4136784], "inv": 1312338633, "invPrev": 1307585563, "uc": 13864888, "ucPrev": 13526431, "ytdAbs": 5135293, "ytdDel": 5963313, "prevYtdDel": 5813294, "partial": false, "subs": [["Chicago South", 133353086, 3.6, 218506, 1035770, 8.28, "MF"], ["Interstate 80", 128205264, 6.2, 2943729, 4704719, 8.77], ["Interstate 55", 110146192, 6.2, 1699285, 1114471, 7.42], ["Western Cook", 101182978, 5.1, -26413, 85680, 6.04], ["Southern Fox Valley", 101095780, 4.8, -554801, 1242905, 6.84], ["O'Hare", 97515620, 4.2, 46908, 1167172, 9.6], ["Chicago North", 89691152, 4.5, -444703, 67593, 8.83, "MF"], ["South Suburbs", 89377990, 4.6, 115187, 0, 5.36], ["Lake County", 76207595, 4.3, 886285, 0, 7.5], ["Southeast Wisconsin", 65149547, 7.9, 376381, 0, 5.68], ["Northern Cook", 51345561, 4.7, 132015, 0, 8.47], ["Northwest Indiana", 47854719, 5.9, -169018, 2547770, 6.6], ["Central DuPage", 46110605, 2.8, -166322, 289440, 9.27, "MF"], ["Northern Fox Valley", 42796077, 4.1, 651259, 249411, 8], ["Northwest Cook", 35109520, 5.8, -259365, 423036, 9.71], ["Northeast DuPage", 29060683, 3.1, -330049, 140122, 9.04], ["McHenry County", 22760837, 2.9, 100481, 428900, 7.95], ["Interstate 39", 22405068, 3.3, -132120, 0, 6.91], ["Southern DuPage", 15982762, 0.8, 54508, 367899, 11.51], ["Western Kane", 6987597, 5.1, -6460, 0, null]], "note": {"en": "Chicago occupancy held at 95.2% in Q2 2026, and vacancy has stayed between 4.7% and 4.8% for two years. Net absorption picked up to 3.30M sf in the quarter, and asking rents rose 2.0% QoQ to $7.55/sf/yr, roughly flat versus a year ago. Construction has doubled from 6.8M sf a year ago to 13.9M sf, a third of it in the I-80 corridor. The market is steady, but the growing pipeline is worth watching.", "zh": "2026年第二季度，芝加哥出租率保持在95.2%，空置率过去两年一直维持在4.7%至4.8%之间。本季净吸纳量回升至330万平方英尺，平均要价租金环比上涨2.0%至7.55美元/平方英尺/年，与去年同期基本持平。在建面积由一年前的681万平方英尺翻倍至1,386万平方英尺，其中约三分之一位于I-80走廊。市场整体稳健，但在建规模上升值得关注。"}}, {"id": "nnj", "en": "Northern New Jersey", "zh": "北新泽西", "rent": [18.82, 18.67, 18.43, 17.89, 17.99, 17.82, 17.44, 17.72], "vac": [7.4, 8.3, 8.2, 8.6, 8.3, 8.9, 8.3, 8.3], "abs": [-1555045, -1177592, 797478, -699298, 1050773, -1237058, 2014490, 260822], "del": [null, 2040799, 319396, 867396, 252725, 567360, 1695928, 220031], "inv": 316276230, "invPrev": 314907078, "uc": 2505560, "ucPrev": 1918253, "ytdAbs": 2344001, "ytdDel": 1915959, "prevYtdDel": 1186792, "partial": true, "subs": [["Port Region", 98252766, 11.6, null, null, 18.85], ["Greater I-80 Corridor", 86310086, 7.1, null, null, 16.28], ["Meadowlands", 82207459, 8.1, null, null, 18.46], ["Central Bergen", 21526216, 8.6, null, null, 16.05], ["Northern Bergen", 17133977, 5.5, null, null, 16.26], ["Suburban Essex", 10459804, 3.2, null, null, 16.48], ["GW Bridge Market", 3751211, 7.2, null, null, 17.72], ["Route 23 North", 572179, 14.2, null, null, 13]], "note": {"en": "Northern New Jersey occupancy was 91.7% in Q2 2026, unchanged from Q1. Net absorption slowed to 0.26M sf after a strong first quarter, bringing the year to 2.34M sf, ahead of the 1.92M sf delivered. Asking rents are the highest of the five metros at $17.72/sf/yr, up 1.6% QoQ but 5.8% below Q3 2024. The Port Region is the weak spot at 11.6% vacancy.", "zh": "2026年第二季度，北新泽西出租率为91.7%，与上季度持平。继一季度强劲表现后，本季净吸纳量放缓至26万平方英尺，今年累计234万平方英尺，高于同期交付的192万平方英尺。平均要价租金为五个城市中最高，达17.72美元/平方英尺/年，环比上涨1.6%，但较2024年第三季度下降5.8%。港口区（Port Region）空置率达11.6%，是主要薄弱子市场。"}}], "meta": {"period": "2026-Q2", "generated": "2026-09-27", "us_vac": 6.9}};
+const DATA = {"quarters": ["Q3'24", "Q4'24", "Q1'25", "Q2'25", "Q3'25", "Q4'25", "Q1'26", "Q2'26"], "metros": [{"id": "la", "en": "Los Angeles", "rent": [17.26, 16.72, 16.4, 16.1, 16.08, 15.96, 16.06, 15.83], "vac": [4.8, 4.9, 4.9, 4.8, 4.8, 4.6, 4.6, 4.2], "abs": [-3384155, -2135712, -729788, -1118053, 474742, -437789, -2173366, 1233596], "del": [null, 1368047, 1380614, 1044870, 1584407, 552374, 352707, 408737], "inv": 800488691, "invPrev": 802544883, "uc": 4433489, "ucPrev": 4354409, "ytdAbs": 1760037, "ytdDel": 761444, "prevYtdDel": 2425484, "partial": false, "subs": [["LA South", 192785851, 4.5, 2734389, 1284389, 16.44], ["San Gabriel Valley", 159165425, 2.9, 221591, 323744, 17.28], ["LA West", 8411143, 1.8, 73167, 0, 26.64], ["LA Central", 200520562, 4.3, 41471, 419591, 13.08], ["Mid-Counties", 89743084, 4.7, -39737, 185056, 15.72], ["LA North", 149862626, 4.7, -1270844, 2220709, 16.44]], "note": "In Q2 2026, Los Angeles occupancy rose to 95.8%, up 0.4 points from Q1, as tenants absorbed a net 1.23M sf, led by LA South (+1.98M sf in the quarter). Asking rents slipped to $15.83/sf/yr, down 1.4% QoQ and 8.3% below Q3 2024. New supply is thin: 0.76M sf delivered this year and 4.4M sf under construction, about 0.6% of stock. With little new space coming, occupancy should stay tight, and rents look more likely to stabilize than to rebound soon."}, {"id": "ie", "en": "Inland Empire", "rent": [14.96, 14.76, 14.18, 13.69, 13.46, 13.19, 12.29, 12.4], "vac": [7.9, 8.0, 7.4, 7.9, 7.8, 8.1, 8.5, 8.8], "abs": [-3152890, -422480, 3160638, -1822576, 2993019, -1478658, -3366628, -1544214], "del": [null, 1453450, 1974506, 3429182, 4667296, 2649282, 39628, 1407921], "inv": 655580790, "invPrev": 655795540, "uc": 4797056, "ucPrev": 3339817, "ytdAbs": -3811447, "ytdDel": 1447549, "prevYtdDel": 5403688, "partial": false, "subs": [["IE West", 340428417, 7.4, -2652448, 2769439, 13.68], ["IE East", 279295604, 11, -1384116, 2027617, 11.4], ["IE South", 35856769, 4.5, 225117, 0, 13.56]], "note": "Inland Empire occupancy fell to 91.2% in Q2 2026, down 0.3 points QoQ, as tenants vacated a net 1.54M sf (3.81M sf so far this year). IE West accounts for most of this year's losses, and IE East has the highest vacancy at 11.0%. Asking rents edged up 0.9% QoQ to $12.40/sf/yr but are 9.4% below a year ago and 17% below Q3 2024. Space under construction rose to 4.8M sf from 3.3M sf last quarter. Rents are likely to stay under pressure until move-outs slow."}, {"id": "dfw", "en": "Dallas–Fort Worth", "rent": [8.47, 8.62, 8.61, 8.03, 8.12, 8.38, 8.71, 9.19], "vac": [9.3, 9.7, 9.7, 9.4, 8.8, 8.2, 8.3, 8.1], "abs": [6296093, 3344396, 6468554, 6777754, 7747274, 8850033, 4280006, 9028165], "del": [null, 4158796, 5714530, 5403610, 3880839, 4630218, 5096936, 8529650], "inv": 1040462731, "invPrev": 1031921578, "uc": 29831149, "ucPrev": 31199625, "ytdAbs": 13626637, "ytdDel": 13626586, "prevYtdDel": 11118140, "partial": false, "subs": [["Great Southwest", 129812979, 7.6, 142078, 1966711, 9.32], ["DFW Airport", 109987100, 11.2, 350875, 3103143, 11.2], ["South Dallas", 101035211, 9.2, 2012660, 2284000, 6.55], ["Alliance", 87423839, 7.9, 3899391, 7657916, 9.31], ["North Fort Worth", 58996537, 8.1, 638783, 1539294, 8.76], ["Valwood/N Stemmons", 51579615, 4.2, -272223, 541107, 9.56], ["Brookhollow/Trinity", 49317551, 7, -72555, 0, 11.32], ["South Fort Worth", 49090241, 9.3, 1818861, 3464977, 7.37], ["Garland", 47228047, 6.3, 589402, 178978, 9.9], ["Richardson/Plano", 39655529, 7.2, 84651, 365667, 12.13], ["Far North/I-35", 37210903, 15.3, 857152, 237787, 9.05], ["Pinnacle/Turnpike", 33089490, 7.6, -220544, 467245, 7.77], ["Mesquite", 32263023, 8, 586082, 145940, 8.41], ["East Fort Worth", 27548947, 9.9, -129061, 0, 9.16], ["Ellis County", 27717609, 3.6, 295150, 2703641, 7.12], ["Redbird", 24929874, 2.3, 275539, 222520, 6.65], ["Walnut Hill/Stemmons", 23932405, 5.7, -153220, 0, 10.4], ["East Dallas Suburbs", 23358029, 7.9, 2392179, 1442721, 7.78], ["North Dallas/Metropolitan", 19682796, 11, 221210, 0, 10.25], ["Allen/McKinney", 18766761, 11.4, 328954, 1809502, 10.62], ["Central Fort Worth", 15848545, 2.6, -144285, 0, 7.23], ["Central Dallas", 12680994, 5.9, 0, 0, 9.64], ["Johnson County", 10594606, 1.4, -12250, 1700000, 17.27], ["West Fort Worth", 8712100, 13.9, 137808, 0, 9.57]], "note": "Dallas–Fort Worth absorbed a net 9.03M sf in Q2 2026, the most of the five metros, lifting occupancy to 91.9% (up 0.2 points QoQ). Asking rents rose 5.5% QoQ to $9.19/sf/yr, 14.4% above a year ago. Alliance led demand with 3.9M sf absorbed this year. The risk is supply: 13.6M sf has been delivered this year and 29.8M sf is still under construction, about 2.9% of stock, so further occupancy gains depend on demand keeping pace."}, {"id": "chi", "en": "Chicago", "rent": [7.14, 7.17, 7.27, 7.52, 7.36, 7.16, 7.4, 7.55], "vac": [4.7, 4.7, 4.7, 4.8, 4.7, 4.7, 4.8, 4.8], "abs": [1929403, 555423, 1473928, 1726289, 1068560, 1081795, 1079092, 3296477], "del": [null, 3583320, 2465361, 3347933, 1726671, 1877309, 1826529, 4136784], "inv": 1312338633, "invPrev": 1307585563, "uc": 13864888, "ucPrev": 13526431, "ytdAbs": 5135293, "ytdDel": 5963313, "prevYtdDel": 5813294, "partial": false, "subs": [["Chicago South", 133353086, 3.6, 218506, 1035770, 8.28, "MF"], ["Interstate 80", 128205264, 6.2, 2943729, 4704719, 8.77], ["Interstate 55", 110146192, 6.2, 1699285, 1114471, 7.42], ["Western Cook", 101182978, 5.1, -26413, 85680, 6.04], ["Southern Fox Valley", 101095780, 4.8, -554801, 1242905, 6.84], ["O'Hare", 97515620, 4.2, 46908, 1167172, 9.6], ["Chicago North", 89691152, 4.5, -444703, 67593, 8.83, "MF"], ["South Suburbs", 89377990, 4.6, 115187, 0, 5.36], ["Lake County", 76207595, 4.3, 886285, 0, 7.5], ["Southeast Wisconsin", 65149547, 7.9, 376381, 0, 5.68], ["Northern Cook", 51345561, 4.7, 132015, 0, 8.47], ["Northwest Indiana", 47854719, 5.9, -169018, 2547770, 6.6], ["Central DuPage", 46110605, 2.8, -166322, 289440, 9.27, "MF"], ["Northern Fox Valley", 42796077, 4.1, 651259, 249411, 8], ["Northwest Cook", 35109520, 5.8, -259365, 423036, 9.71], ["Northeast DuPage", 29060683, 3.1, -330049, 140122, 9.04], ["McHenry County", 22760837, 2.9, 100481, 428900, 7.95], ["Interstate 39", 22405068, 3.3, -132120, 0, 6.91], ["Southern DuPage", 15982762, 0.8, 54508, 367899, 11.51], ["Western Kane", 6987597, 5.1, -6460, 0, null]], "note": "Chicago occupancy held at 95.2% in Q2 2026, and vacancy has stayed between 4.7% and 4.8% for two years. Net absorption picked up to 3.30M sf in the quarter, and asking rents rose 2.0% QoQ to $7.55/sf/yr, roughly flat versus a year ago. Construction has doubled from 6.8M sf a year ago to 13.9M sf, a third of it in the I-80 corridor. The market is steady, but the growing pipeline is worth watching."}, {"id": "nnj", "en": "Northern New Jersey", "rent": [18.82, 18.67, 18.43, 17.89, 17.99, 17.82, 17.44, 17.72], "vac": [7.4, 8.3, 8.2, 8.6, 8.3, 8.9, 8.3, 8.3], "abs": [-1555045, -1177592, 797478, -699298, 1050773, -1237058, 2014490, 260822], "del": [null, 2040799, 319396, 867396, 252725, 567360, 1695928, 220031], "inv": 316276230, "invPrev": 314907078, "uc": 2505560, "ucPrev": 1918253, "ytdAbs": 2344001, "ytdDel": 1915959, "prevYtdDel": 1186792, "partial": true, "subs": [["Port Region", 98252766, 11.6, null, null, 18.85], ["Greater I-80 Corridor", 86310086, 7.1, null, null, 16.28], ["Meadowlands", 82207459, 8.1, null, null, 18.46], ["Central Bergen", 21526216, 8.6, null, null, 16.05], ["Northern Bergen", 17133977, 5.5, null, null, 16.26], ["Suburban Essex", 10459804, 3.2, null, null, 16.48], ["GW Bridge Market", 3751211, 7.2, null, null, 17.72], ["Route 23 North", 572179, 14.2, null, null, 13]], "note": "Northern New Jersey occupancy was 91.7% in Q2 2026, unchanged from Q1. Net absorption slowed to 0.26M sf after a strong first quarter, bringing the year to 2.34M sf, ahead of the 1.92M sf delivered. Asking rents are the highest of the five metros at $17.72/sf/yr, up 1.6% QoQ but 5.8% below Q3 2024. The Port Region is the weak spot at 11.6% vacancy."}], "meta": {"period": "2026-Q2", "generated": "2026-09-28", "us_vac": 6.9}};
 const QTR = DATA.quarters, METROS = DATA.metros, META = DATA.meta;
 const US = {vac: META.us_vac};
 const T = {
- en:{brandSub:"Market intelligence",navOverview:"Market overview",navMap:"Map board",titleMap:"Map board",subtitleMap:"Submarket heat map of supply, vacancy and rent",mapTitle:"Submarket heat map",mapSub:"Where supply, vacancy and rent are concentrated in this metro. Hover a circle for its numbers; click to open that submarket.",heatmap:"Heat map",mSupply:"Supply",mVac:"Vacancy",mRent:"Rent",opacity:"Opacity",rankTitle:"Submarkets",mapNote:"Circles are approximate submarket centers and gray squares are reference points. The map has no streets or boundaries; it shows where each submarket sits relative to the others.",lgSupplyL:"Existing supply (M sf)",lgVacL:"Vacancy (%)",lgRentL:"Asking rent ($/sf/yr)",rankBy:"ranked by",occAxis:"Occupancy (%)",rentAxis:"Rent ($/sf/yr)",srcShort:"Source: Cushman & Wakefield",lang:"Language",
+ en:{brandSub:"Market intelligence",navOverview:"Market overview",navMap:"Map board",titleMap:"Map board",subtitleMap:"Submarket heat map of supply, vacancy and rent",mapTitle:"Submarket heat map",mapSub:"Where supply, vacancy and rent are concentrated in this metro. Hover a circle for its numbers; click to open that submarket.",heatmap:"Heat map",mSupply:"Supply",mVac:"Vacancy",mRent:"Rent",opacity:"Opacity",rankTitle:"Submarkets",mapNote:"Circles are approximate submarket centers and gray squares are reference points. The map has no streets or boundaries; it shows where each submarket sits relative to the others.",lgSupplyL:"Existing supply (M sf)",lgVacL:"Vacancy (%)",lgRentL:"Asking rent ($/sf/yr)",rankBy:"ranked by",occAxis:"Occupancy (%)",rentAxis:"Rent ($/sf/yr)",srcShort:"Source: Cushman & Wakefield",
   title:"Market overview",subtitle:"Stock, rent, supply and absorption for each metro and submarket",cityLevel:"City level",subLevel:"Submarket level",city:"City",submarket:"Submarket",period:"Report period",
   aiTitle:"This quarter's market update (AI)",aiGen:"Drafted by Claude from the figures on this page · {date}",
   qRentTitle:"Quarterly average rent and rent change",qRentSub:"Last 8 quarters: bars show asking rent ($/sf/yr); numbers on top are the quarter-over-quarter change. Bars for the same quarter as the latest are highlighted for year-over-year comparison.",
@@ -273,31 +268,17 @@ const T = {
   sStock:"Stock (M sf)",sShare:"of metro stock",sOcc:"Occupancy",sRent:"Asking rent ($/sf/yr)",sAbs:"Net absorption YTD (M sf)",sUc:"Under construction (M sf)",sUcPct:"of submarket stock",vsMetroShort:"vs metro",noData:"not reported",
   readStrong:"Strong",readMixed:"Mixed",readWeak:"Weak",readLabel:"Market read",
   supplyNa:"Q3'24 supply not available",mf:"MF",
-  foot:"Sources: Cushman & Wakefield U.S. Industrial MarketBeat national tables ({range}) and {period} local MarketBeats for submarkets. Rents are overall asking rents on an annual basis; submarket rents follow each local report (monthly figures × 12; rows marked MF are manufacturing). Figures are as reported each quarter; Cushman revises earlier quarters later, and the latest quarter is preliminary. Submarket columns that did not add up to the metro total are left out. Not investment advice."},
- zh:{brandSub:"市场情报",navOverview:"市场总览",navMap:"地图看板",titleMap:"地图看板",subtitleMap:"子市场供应、空置与租金热力图",mapTitle:"子市场热力图",mapSub:"查看供应、空置和租金在城市内的分布。悬停圆点查看数据，点击进入该子市场。",heatmap:"热力图",mSupply:"供应",mVac:"空置",mRent:"租金",opacity:"不透明度",rankTitle:"子市场",mapNote:"圆点为子市场的大致中心位置，灰色方块为参照地标。地图不含街道和边界，仅用于显示各子市场的相对位置。",lgSupplyL:"现有供应（百万平方英尺）",lgVacL:"空置率（%）",lgRentL:"要价租金（美元/平方英尺/年）",rankBy:"排序：",occAxis:"出租率（%）",rentAxis:"租金（美元/平方英尺/年）",srcShort:"数据来源：Cushman & Wakefield",lang:"语言",
-  title:"市场总览",subtitle:"城市与子市场的库存、租金、供应与去化",cityLevel:"城市层面",subLevel:"子市场层面",city:"城市",submarket:"子市场",period:"报告期",
-  aiTitle:"本季度市场动态（AI）",aiGen:"由Claude根据本页数据撰写 · {date}",
-  qRentTitle:"季度平均租金与租金增幅",qRentSub:"近8个季度：柱状图为平均要价租金（美元/平方英尺/年），顶部数字为租金环比增幅（%）。与最新季度同期的柱体高亮，便于同比比较。",
-  lgQ2:"与最新季度同期",lgOther:"其他季度",saTitle:"季度新增供应 vs 净吸纳量",saSub:"单位：百万平方英尺/季度；柱上方折线为出租率（%）。净吸纳量为各季度首次公布值。",
-  lgSupply:"新增供应",lgAbs:"净吸纳量",lgOcc:"出租率（%）",yRentTitle:"年度平均租金与租金增幅",yRentSub:"年末要价租金（美元/平方英尺/年）及本季度；顶部数字为较前一柱的增幅。",
-  subTblTitle:"各子市场概览",subTblSub:"点击任一行查看该子市场。",subCmpTitle:"子市场对比：租金与出租率（本季度）",subCmpSub:"柱状图为要价租金（美元/平方英尺/年），上方折线为出租率（%）。",lgRent:"平均租金",vsMetro:"与城市整体对比",
-  kStock:"市场存量（百万平方英尺）",kRent:"平均租金（美元/平方英尺/年）",kDel:"当年新增供应（百万平方英尺）",kAbs:"当年净吸纳量（百万平方英尺）",kOcc:"出租率",kUc:"未来市场供应（百万平方英尺）",
-  qoq:"环比",vsH1:"较去年同期",ptsQoq:"个百分点 环比",
-  thSub:"子市场",thStock:"现有市场供量（百万平方英尺）",thUc:"在建面积（百万平方英尺）",thOcc:"出租率",thRent:"要价租金（美元/平方英尺/年）",thAbs:"年内净吸纳（百万平方英尺）",
-  sStock:"存量（百万平方英尺）",sShare:"占城市存量",sOcc:"出租率",sRent:"要价租金（美元/平方英尺/年）",sAbs:"年内净吸纳（百万平方英尺）",sUc:"在建面积（百万平方英尺）",sUcPct:"占子市场存量",vsMetroShort:"较城市",noData:"未披露",
-  readStrong:"强",readMixed:"分化",readWeak:"弱",readLabel:"市场判断",
-  supplyNa:"2024年三季度供应数据暂缺",mf:"制造业",
-  foot:"数据来源：Cushman & Wakefield 美国工业 MarketBeat 全国统计表（{range}），子市场数据来自{period}各地MarketBeat。租金为年化整体要价租金；子市场租金沿用各地报告口径（月租金×12；标注“制造业”的为制造业租金）。数据为各季度首次公布值，Cushman此后会修订，最新季度为初步数据。与城市总数不符的子市场数据暂不显示。不构成投资建议。"}
+  foot:"Sources: Cushman & Wakefield U.S. Industrial MarketBeat national tables ({range}) and {period} local MarketBeats for submarkets. Rents are overall asking rents on an annual basis; submarket rents follow each local report (monthly figures × 12; rows marked MF are manufacturing). Figures are as reported each quarter; Cushman revises earlier quarters later, and the latest quarter is preliminary. Submarket columns that did not add up to the metro total are left out. Not investment advice."}
 };
-let lang = "en", level = "city", cityId = "la", subIdx = 0;
-try{ const s = JSON.parse(localStorage.getItem("imm2")||"{}"); if(s.lang) lang=s.lang; if(METROS.some(m=>m.id===s.city)) cityId=s.city; }catch(e){}
-const t = k => T[lang][k] ?? T.en[k];
-const save = () => { try{ localStorage.setItem("imm2", JSON.stringify({lang, city:cityId})); }catch(e){} };
+let level = "city", cityId = "la", subIdx = 0;
+try{ const s = JSON.parse(localStorage.getItem("imm2")||"{}"); if(METROS.some(m=>m.id===s.city)) cityId=s.city; }catch(e){}
+const t = k => T.en[k];
+const save = () => { try{ localStorage.setItem("imm2", JSON.stringify({city:cityId})); }catch(e){} };
 const M1 = v => (v/1e6).toFixed(1), M2 = v => (v/1e6).toFixed(2);
 const sg = (v,d=1) => (v>0?"+":v<0?"−":"") + Math.abs(v).toFixed(d);
 const pct = (a,b) => (a/b-1)*100;
 const yoyIdx = QTR.length-5;
-const nm = m => m[lang];
+const nm = m => m.en;
 const ICON = {
   good:'<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M2.5 6.3l2.2 2.2 4.8-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
   warn:'<svg viewBox="0 0 12 12" aria-hidden="true"><path d="M6 2.5v4.2M6 9.2v.1" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>',
@@ -405,15 +386,15 @@ function subCompare(svg, m, selIdx){
 // Approximate submarket centers (lat, lng) and reference points. Positions are for relative placement only.
 const GEO = {
   la:{subs:{"LA South":[33.87,-118.25],"San Gabriel Valley":[34.02,-117.95],"LA West":[34.01,-118.43],"LA Central":[34.00,-118.19],"Mid-Counties":[33.92,-118.05],"LA North":[34.24,-118.45]},
-      marks:[["Downtown LA","洛杉矶市中心",34.05,-118.25],["Ports of LA / Long Beach","洛杉矶/长滩港",33.75,-118.23],["LAX","洛杉矶国际机场",33.94,-118.41]]},
+      marks:[["Downtown LA",34.05,-118.25],["Ports of LA / Long Beach",33.75,-118.23],["LAX",33.94,-118.41]]},
   ie:{subs:{"IE West":[34.05,-117.55],"IE East":[33.93,-117.25],"IE South":[33.60,-117.15]},
-      marks:[["Ontario Airport","安大略机场",34.056,-117.60],["Riverside","里弗赛德",33.95,-117.40],["San Bernardino","圣贝纳迪诺",34.11,-117.29],["Temecula","蒂梅丘拉",33.49,-117.15]]},
+      marks:[["Ontario Airport",34.056,-117.60],["Riverside",33.95,-117.40],["San Bernardino",34.11,-117.29],["Temecula",33.49,-117.15]]},
   dfw:{subs:{"DFW Airport":[32.90,-97.04],"Brookhollow/Trinity":[32.81,-96.86],"Walnut Hill/Stemmons":[32.88,-96.89],"North Dallas/Metropolitan":[32.95,-96.83],"Valwood/N Stemmons":[32.96,-96.90],"Far North/I-35":[33.05,-96.99],"Richardson/Plano":[33.00,-96.72],"Allen/McKinney":[33.15,-96.65],"Central Dallas":[32.78,-96.79],"Garland":[32.91,-96.64],"Mesquite":[32.78,-96.60],"East Dallas Suburbs":[32.85,-96.45],"Pinnacle/Turnpike":[32.75,-96.92],"Redbird":[32.68,-96.87],"South Dallas":[32.62,-96.75],"Ellis County":[32.45,-96.85],"Great Southwest":[32.75,-97.03],"North Fort Worth":[32.87,-97.29],"Alliance":[32.98,-97.32],"Central Fort Worth":[32.75,-97.33],"East Fort Worth":[32.76,-97.20],"West Fort Worth":[32.75,-97.45],"South Fort Worth":[32.63,-97.32],"Johnson County":[32.40,-97.35]},
-      marks:[["Downtown Dallas","达拉斯市中心",32.78,-96.80],["Downtown Fort Worth","沃斯堡市中心",32.755,-97.33],["DFW Airport","DFW机场",32.90,-97.04]]},
+      marks:[["Downtown Dallas",32.78,-96.80],["Downtown Fort Worth",32.755,-97.33],["DFW Airport",32.90,-97.04]]},
   chi:{subs:{"Central DuPage":[41.90,-88.15],"Chicago North":[41.93,-87.70],"Chicago South":[41.76,-87.63],"Interstate 39":[41.92,-89.07],"Interstate 55":[41.62,-88.10],"Interstate 80":[41.45,-88.15],"Lake County":[42.30,-87.90],"McHenry County":[42.30,-88.40],"Northeast DuPage":[41.97,-88.00],"Northern Cook":[42.05,-87.80],"Northern Fox Valley":[42.05,-88.30],"Northwest Cook":[42.05,-88.07],"Northwest Indiana":[41.55,-87.35],"O'Hare":[41.98,-87.90],"South Suburbs":[41.55,-87.70],"Southeast Wisconsin":[42.70,-87.90],"Southern DuPage":[41.78,-88.05],"Southern Fox Valley":[41.75,-88.30],"Western Cook":[41.85,-87.85],"Western Kane":[41.95,-88.55]},
-      marks:[["The Loop","芝加哥市中心",41.88,-87.63],["O'Hare Airport","奥黑尔机场",41.98,-87.90],["Joliet","乔利埃特",41.52,-88.08]]},
+      marks:[["The Loop",41.88,-87.63],["O'Hare Airport",41.98,-87.90],["Joliet",41.52,-88.08]]},
   nnj:{subs:{"Northern Bergen":[40.97,-74.05],"GW Bridge Market":[40.85,-73.97],"Central Bergen":[40.90,-74.08],"Meadowlands":[40.80,-74.10],"Port Region":[40.68,-74.16],"Suburban Essex":[40.80,-74.28],"Greater I-80 Corridor":[40.88,-74.40],"Route 23 North":[41.05,-74.35]},
-      marks:[["Newark Airport","纽瓦克机场",40.69,-74.17],["Port Newark–Elizabeth","纽瓦克–伊丽莎白港",40.68,-74.14],["Midtown Manhattan","曼哈顿中城",40.75,-73.98]]}
+      marks:[["Newark Airport",40.69,-74.17],["Port Newark–Elizabeth",40.68,-74.14],["Midtown Manhattan",40.75,-73.98]]}
 };
 let view = "overview", metric = "supply", heatOpacity = 0.7, heatOn = true, mapHits = [];
 const METRIC = {
@@ -431,7 +412,7 @@ function renderMap(){
   cv.width = Wp*dpr; cv.height = Hp*dpr; cv.style.height = Hp+"px";
   const ctx = cv.getContext("2d"); ctx.setTransform(dpr,0,0,dpr,0,0);
   const pts = m.subs.map((s,i)=>({s, i, ll:geo.subs[s[0]]})).filter(p=>p.ll);
-  const all = [...pts.map(p=>p.ll), ...geo.marks.map(k=>[k[2],k[3]])];
+  const all = [...pts.map(p=>p.ll), ...geo.marks.map(k=>[k[1],k[2]])];
   const lats = all.map(a=>a[0]), lngs = all.map(a=>a[1]);
   const lat0 = (Math.min(...lats)+Math.max(...lats))/2, kx = Math.cos(lat0*Math.PI/180);
   const spanX = (Math.max(...lngs)-Math.min(...lngs))*kx || .1, spanY = (Math.max(...lats)-Math.min(...lats)) || .1;
@@ -467,7 +448,7 @@ function renderMap(){
     const w = ctx.measureText(txt).width, box = [x-2, y-11, x+w+2, y+3];
     if (box[2] > Wp-4 || placed.some(b=>!(box[2]<b[0]||box[0]>b[2]||box[3]<b[1]||box[1]>b[3]))) return false;
     placed.push(box); ctx.lineWidth = 3.5; ctx.strokeStyle = "rgba(255,255,255,.95)"; ctx.strokeText(txt,x,y); ctx.fillStyle = col; ctx.fillText(txt,x,y); return true; };
-  const markPts = geo.marks.map(k=>{ const [x,y] = P(k[2],k[3]); ctx.fillStyle = "#6B7478"; ctx.fillRect(x-3.5,y-3.5,7,7); return [k,x,y]; });
+  const markPts = geo.marks.map(k=>{ const [x,y] = P(k[1],k[2]); ctx.fillStyle = "#6B7478"; ctx.fillRect(x-3.5,y-3.5,7,7); return [k,x,y]; });
   // submarket circles
   const ranked = [...pts].filter(p=>M.get(p.s)!=null).sort((a,b)=>M.get(b.s)-M.get(a.s));
   const labelSet = new Set((pts.length<=10 ? pts : ranked.slice(0,7)).map(p=>p.i));
@@ -479,7 +460,7 @@ function renderMap(){
   // labels: highest-ranked submarkets first, then reference points, skipping any that would overlap
   ranked.concat(pts.filter(p=>M.get(p.s)==null)).filter(p=>labelSet.has(p.i)).forEach(p=>{ const [x,y] = P(...p.ll), v = M.get(p.s);
     halo(`${p.s[0]}${v==null?'':' · '+M.fmt(v)}`, x+9, y-7, "#16191B", 600) || halo(`${p.s[0]}${v==null?'':' · '+M.fmt(v)}`, x+9, y+16, "#16191B", 600); });
-  markPts.forEach(([k,x,y])=>{ halo(lang==='zh'?k[1]:k[0], x+7, y+4, "#4B5559"); });
+  markPts.forEach(([k,x,y])=>{ halo(k[0], x+7, y+4, "#4B5559"); });
   // legend
   document.getElementById("mapLegend").innerHTML = heatOn && vals.length ? `<span>${t(M.lg)}</span><span class="ramp"></span><span class="ends"><span>${M.fmt(vmin)}</span><span>${M.fmt(vmax)}</span></span>` : "";
   document.getElementById("mapLegend").hidden = !(heatOn && vals.length);
@@ -525,14 +506,14 @@ function renderCity(){
     kpi(t('kStock'), (m.inv/1e6).toLocaleString(undefined,{maximumFractionDigits:1}), `${arrow(sq)}${Math.abs(sq).toFixed(2)}% ${t('qoq')}`, dir(sq)) +
     kpi(t('kRent'), m.rent[QTR.length-1].toFixed(2), `${arrow(rq)}${Math.abs(rq).toFixed(2)}% ${t('qoq')}`, dir(rq)) +
     kpi(t('kDel'), M2(m.ytdDel), `${arrow(dq)}${Math.abs(dq).toFixed(1)}% ${t('vsH1')}`, "flat") +
-    kpi(t('kAbs'), sg(m.ytdAbs/1e6,2), `${lang==='zh'?'本季':'This quarter'} ${sg(m.abs[QTR.length-1]/1e6,2)}`, dir(m.ytdAbs)) +
+    kpi(t('kAbs'), sg(m.ytdAbs/1e6,2), `This quarter ${sg(m.abs[QTR.length-1]/1e6,2)}`, dir(m.ytdAbs)) +
     kpi(t('kOcc'), (100-m.vac[QTR.length-1]).toFixed(1)+"%", `${arrow(oq)}${Math.abs(oq).toFixed(1)} ${t('ptsQoq')}`, dir(oq)) +
     kpi(t('kUc'), M2(m.uc), `${arrow(uq)}${Math.abs(uq).toFixed(1)}% ${t('qoq')}`, "flat");
-  document.getElementById("aiText").textContent = m.note[lang];
+  document.getElementById("aiText").textContent = m.note;
   rentBars(document.getElementById("qRent"), QTR, m.rent, {hl:i=>QTR[i].slice(0,2)===QTR[QTR.length-1].slice(0,2)});
   const q4 = QTR.map((q,i)=>q.startsWith("Q4")?i:-1).filter(i=>i>=0 && i<QTR.length-1).slice(-2);
   const yrs = q4.map(i=>"20"+QTR[i].slice(-2)), last = QTR.length-1;
-  rentBars(document.getElementById("yRent"), [...yrs.map(y=>lang==='zh'?`${y}年末`:`${y} (Q4)`), lang==='zh'?`本季 ${QTR[last]}`:QTR[last]], [...q4.map(i=>m.rent[i]), m.rent[last]], {hl:i=>i===q4.length, w:460, h:330});
+  rentBars(document.getElementById("yRent"), [...yrs.map(y=>`${y} (Q4)`), QTR[last]], [...q4.map(i=>m.rent[i]), m.rent[last]], {hl:i=>i===q4.length, w:460, h:330});
   supplyAbs(document.getElementById("supAbs"), m);
   renderSubTable(m);
   subCompare(document.getElementById("subCmp"), m, -1);
@@ -565,15 +546,10 @@ function renderSub(){
     kpi(t('sRent'), s[5]==null?"n/a":s[5].toFixed(2), rentVs==null?t('noData'):`${arrow(rentVs)}${Math.abs(rentVs).toFixed(1)}% ${t('vsMetroShort')}`, rentVs==null?"flat":dir(rentVs)) +
     kpi(t('sAbs'), s[3]==null?"—":sg(s[3]/1e6,2), s[3]==null?t('noData'):"", s[3]==null?"flat":dir(s[3])) +
     kpi(t('sUc'), s[4]==null?"—":M2(s[4]), s[4]==null?t('noData'):`${(s[4]/s[1]*100).toFixed(1)}% ${t('sUcPct')}`, "flat") +
-    kpi(t('kRent').replace(/\(.*\)|（.*）/,'') + (lang==='zh'?'（城市）':'(metro)'), m.rent[QTR.length-1].toFixed(2), "", "flat");
+    kpi(t('kRent').replace(/\(.*\)/,'') + '(metro)', m.rent[QTR.length-1].toFixed(2), "", "flat");
   const soft = s[2] >= m.vac[QTR.length-1]+2 || (s[3]!=null && s[3]<0 && s[2]>m.vac[QTR.length-1]);
   const tight = s[2] <= m.vac[QTR.length-1]-1.5 && (s[3]==null || s[3]>=0);
-  const txt = lang==='zh'
-    ? `${s[0]}是${nm(m)}${n}个子市场之一，存量${M1(s[1])}百万平方英尺，占城市存量的${share.toFixed(1)}%。出租率${occ.toFixed(1)}%，${occ>=mOcc?'高于':'低于'}城市平均${Math.abs(occ-mOcc).toFixed(1)}个百分点，在${n}个子市场中排名第${occRank}。` +
-      (s[5]!=null?`要价租金${s[5].toFixed(2)}美元/平方英尺/年，${rentVs>=0?'高于':'低于'}城市平均${Math.abs(rentVs).toFixed(1)}%，租金排名第${rentRank}。`:'') +
-      (s[3]!=null?`今年累计净吸纳${sg(s[3]/1e6,2)}百万平方英尺，在建${M2(s[4])}百万平方英尺。`:'') +
-      (soft?'整体判断：偏弱。':tight?'整体判断：偏紧。':'整体判断：与城市整体基本一致。')
-    : `${s[0]} is one of ${n} submarkets in ${nm(m)}, with ${M1(s[1])}M sf of stock (${share.toFixed(1)}% of the metro). Occupancy is ${occ.toFixed(1)}%, ${Math.abs(occ-mOcc).toFixed(1)} points ${occ>=mOcc?'above':'below'} the metro average, ranking ${occRank} of ${n}. ` +
+  const txt = `${s[0]} is one of ${n} submarkets in ${nm(m)}, with ${M1(s[1])}M sf of stock (${share.toFixed(1)}% of the metro). Occupancy is ${occ.toFixed(1)}%, ${Math.abs(occ-mOcc).toFixed(1)} points ${occ>=mOcc?'above':'below'} the metro average, ranking ${occRank} of ${n}. ` +
       (s[5]!=null?`Asking rent is $${s[5].toFixed(2)}/sf/yr, ${Math.abs(rentVs).toFixed(1)}% ${rentVs>=0?'above':'below'} the metro average (rank ${rentRank} for rent). `:'') +
       (s[3]!=null?`Net absorption this year is ${sg(s[3]/1e6,2)}M sf, with ${M2(s[4])}M sf under construction. `:'') +
       (soft?'Read: softer than the metro.':tight?'Read: tighter than the metro.':'Read: in line with the metro.');
@@ -583,7 +559,7 @@ function renderSub(){
 
 function fillSelects(){
   const cs = document.getElementById("citySel");
-  cs.innerHTML = METROS.map(m=>`<option value="${m.id}" ${m.id===cityId?'selected':''}>${m.zh} / ${m.en}</option>`).join("");
+  cs.innerHTML = METROS.map(m=>`<option value="${m.id}" ${m.id===cityId?'selected':''}>${m.en}</option>`).join("");
   const ss = document.getElementById("subSel"), m = cur();
   if (subIdx >= m.subs.length) subIdx = 0;
   ss.innerHTML = m.subs.map((s,i)=>`<option value="${i}" ${i===subIdx?'selected':''}>${s[0]}</option>`).join("");
@@ -593,10 +569,7 @@ function renderRead(){
   document.getElementById("readChip").innerHTML = `<span class="field">${t('readLabel')} <span class="chip ${r}">${ICON[r]}${lab}</span></span>`;
 }
 function applyLang(){
-  document.documentElement.lang = lang==='zh'?'zh-CN':'en';
   document.querySelectorAll("[data-i]").forEach(el=>{ el.textContent = t(el.dataset.i); });
-  document.getElementById("lang-zh").setAttribute("aria-pressed", lang==='zh');
-  document.getElementById("lang-en").setAttribute("aria-pressed", lang==='en');
   document.getElementById("foot").textContent = t('foot').replace("{range}", `${QTR[0]}–${QTR[QTR.length-1]}`).replace("{period}", META.period);
   document.getElementById("periodVal").textContent = META.period;
   document.querySelectorAll('[data-i="aiGen"]').forEach(el=>el.textContent = t('aiGen').replace("{date}", META.generated));
@@ -639,8 +612,6 @@ document.getElementById("lv-city").onclick = ()=>setLevel("city");
 document.getElementById("lv-sub").onclick = ()=>setLevel("sub");
 document.getElementById("citySel").onchange = e=>{ cityId = e.target.value; subIdx = 0; save(); render(); };
 document.getElementById("subSel").onchange = e=>{ subIdx = +e.target.value; render(); };
-document.getElementById("lang-zh").onclick = ()=>{ lang="zh"; save(); render(); };
-document.getElementById("lang-en").onclick = ()=>{ lang="en"; save(); render(); };
 setLevel("city");
 </script>
 

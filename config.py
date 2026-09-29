@@ -26,7 +26,7 @@ US_VACANCY_DEFAULT = 6.9
 #   local_page    - the web page to download the PDF from by hand if the patterns stop working
 METROS = {
     "la": {
-        "name_en": "Los Angeles", "name_zh": "洛杉矶",
+        "name_en": "Los Angeles",
         "national_row": "Los Angeles, CA",
         "local_urls": [
             "https://assets.cushmanwakefield.com/-/media/cw/marketbeat-pdfs/{y}/q{q}/us-reports/industrial/la_americas_marketbeat_industrial_q{q}-{y}.pdf",
@@ -34,7 +34,7 @@ METROS = {
         "local_page": "https://www.cushmanwakefield.com/en/united-states/insights/us-marketbeats/los-angeles-marketbeats",
     },
     "ie": {
-        "name_en": "Inland Empire", "name_zh": "内陆帝国",
+        "name_en": "Inland Empire",
         "national_row": "Inland Empire, CA",
         "local_urls": [
             "https://assets.cushmanwakefield.com/-/media/cw/marketbeat-pdfs/{y}/q{q}/us-reports/industrial/inland-empire_americas_marketbeat_industrial_q{q}-{y}.pdf",
@@ -42,7 +42,7 @@ METROS = {
         "local_page": "https://www.cushmanwakefield.com/en/united-states/insights/us-marketbeats/inland-empire-marketbeats",
     },
     "dfw": {
-        "name_en": "Dallas–Fort Worth", "name_zh": "达拉斯–沃斯堡",
+        "name_en": "Dallas–Fort Worth",
         "national_row": "Dallas/Ft. Worth, TX",
         "local_urls": [
             "https://assets.cushmanwakefield.com/-/media/cw/marketbeat-pdfs/{y}/q{q}/us-reports/industrial/dallas-fort-worth_americas_marketbeat_industrial_q{q}-{y}.pdf",
@@ -50,7 +50,7 @@ METROS = {
         "local_page": "https://www.cushmanwakefield.com/en/united-states/insights/us-marketbeats/dallas-ft-worth-marketbeats/industrial",
     },
     "chi": {
-        "name_en": "Chicago", "name_zh": "芝加哥",
+        "name_en": "Chicago",
         "national_row": "Chicago, IL",
         "local_urls": [
             "https://assets.cushmanwakefield.com/-/media/cw/marketbeat-pdfs/{y}/q{q}/us-reports/industrial/chicago_americas_marketbeat_industrial_q{q}-{y}.pdf",
@@ -58,7 +58,7 @@ METROS = {
         "local_page": "https://www.cushmanwakefield.com/en/united-states/insights/us-marketbeats/chicago-marketbeats/industrial",
     },
     "nnj": {
-        "name_en": "Northern New Jersey", "name_zh": "北新泽西",
+        "name_en": "Northern New Jersey",
         "national_row": "New Jersey - Northern",
         "local_urls": [
             "https://assets.cushmanwakefield.com/-/media/cw/marketbeat-pdfs/{y}/q{q}/us-reports/industrial/nj_americas_marketbeat_industrial_q{q}{y}.pdf",

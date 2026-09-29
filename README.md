@@ -2,7 +2,7 @@
 
 A dashboard for REIT investors that tracks the industrial (warehouse) real estate market in five US metros and their submarkets: Los Angeles, Inland Empire, Dallas–Fort Worth, Chicago and Northern New Jersey.
 
-Every quarter, one command downloads the new Cushman & Wakefield reports, has Claude read the numbers out of the PDFs, checks them, has Claude write a short market update for each city (English and Chinese), and rebuilds the dashboard.
+Every quarter, one command downloads the new Cushman & Wakefield reports, has Claude read the numbers out of the PDFs, checks them, has Claude write a short market update for each city, and rebuilds the dashboard.
 
 ## What's in this folder
 
@@ -18,7 +18,7 @@ Every quarter, one command downloads the new Cushman & Wakefield reports, has Cl
 | `data/history.json` | All the numbers, quarter by quarter (starts with Q3 2024 – Q2 2026) |
 | `data/notes.json` | The written market updates |
 | `data/raw/` | Downloaded PDFs, one folder per quarter |
-| `site/template.html` | The dashboard design (charts, layout, English/Chinese text) |
+| `site/template.html` | The dashboard design (charts, layout, text) |
 | `site/index.html` | The finished dashboard; double-click to open |
 
 ## One-time setup

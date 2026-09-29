@@ -1,4 +1,4 @@
-"""Step 4: have Claude write each city's "market update" in English and Chinese.
+"""Step 4: have Claude write each city's "market update".
 
 Only the numbers from data/history.json go into the prompt, so the summary can't
 invent figures. Results are saved to data/notes.json.
@@ -18,9 +18,8 @@ SCHEMA = {
     "type": "object",
     "properties": {
         "en": {"type": "string", "description": "English paragraph, 70-110 words"},
-        "zh": {"type": "string", "description": "Simplified Chinese paragraph covering the same points"},
     },
-    "required": ["en", "zh"],
+    "required": ["en"],
 }
 
 STYLE = """Write a short quarterly market update for an industrial real estate market, for REIT investors.
@@ -31,8 +30,6 @@ Rules:
   submarkets. End with one sentence on what to watch.
 - Use only the numbers given. Do not invent figures, tenant names or causes that aren't in the data.
 - Occupancy = 100 - vacancy. Use M sf with 1-2 decimals. Rents in $/sf/yr.
-- The Chinese version should read naturally (e.g. 出租率, 净吸纳量, 环比, 同比, 在建, 平方英尺, 美元/平方英尺/年),
-  not word-for-word.
 Example of the tone (Los Angeles, Q2 2026):
 "In Q2 2026, Los Angeles occupancy rose to 95.8%, up 0.4 points from Q1, as tenants absorbed a net 1.23M sf, led by
 LA South (+1.98M sf in the quarter). Asking rents slipped to $15.83/sf/yr, down 1.4% QoQ and 8.3% below Q3 2024.

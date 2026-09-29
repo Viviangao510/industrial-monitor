@@ -15,7 +15,7 @@ Each metro gets a "market read" (Strong / Mixed / Weak) from four checks in `sit
 1. `scripts/fetch_reports.py` → `data/raw/<Q>/national.pdf` and `<metro>.pdf`
 2. `scripts/extract.py` → Claude reads PDFs via the API (tool use for strict JSON) → `data/history.json`
 3. `scripts/check.py` → `data/checks/<Q>.txt`; hides submarket columns that don't reconcile
-4. `scripts/summarize.py` → Claude writes EN + ZH updates → `data/notes.json`
+4. `scripts/summarize.py` → Claude writes each metro's update (English only) → `data/notes.json`
 5. `scripts/build_site.py` → injects data into `site/template.html` → `site/index.html`
 
 ## Data rules

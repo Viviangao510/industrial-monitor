@@ -105,7 +105,7 @@ def extract_national(quarter, h):
             print(f"  ✗ {mid}: row '{m['national_row']}' not found in national table")
             continue
         clean = {k: row.get(k) for k in ["rent", "vac", "abs_q", "del_ytd", "inv", "uc", "abs_ytd"] if row.get(k) is not None}
-        h["metros"].setdefault(mid, {"name_en": m["name_en"], "name_zh": m["name_zh"], "series": {}, "submarkets": {}})
+        h["metros"].setdefault(mid, {"name_en": m["name_en"], "series": {}, "submarkets": {}})
         h["metros"][mid]["series"][quarter] = clean
         print(f"  ✓ {mid}: vacancy {clean['vac']}%, rent ${clean['rent']}, absorption {clean['abs_q']:,.0f} sf")
     h.setdefault("us_vacancy", {})[quarter] = out["us_vacancy"]

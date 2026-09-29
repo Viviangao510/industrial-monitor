@@ -6,7 +6,7 @@ Steps:
   1. fetch      download the Cushman reports for that quarter
   2. extract    Claude reads the PDFs and the numbers go into data/history.json
   3. check      numbers are checked; problems are listed in data/checks/2026Q3.txt
-  4. summarize  Claude writes each city's market update (English + Chinese)
+  4. summarize  Claude writes each city's market update
   5. build      site/index.html is rebuilt
 
 Options:

@@ -49,9 +49,9 @@ def build(latest=None):
         subs = [[x["name"], x["inv"], x["vac"], x.get("abs_ytd"), x.get("uc"), x.get("rent")] + ([x["rent_note"]] if x.get("rent_note") else [])
                 for x in m.get("submarkets", {}).get(sub_q, [])]
 
-        note = notes.get(mid, {}).get(latest) or {"en": "No market update written for this quarter yet.", "zh": "本季度市场动态尚未生成。"}
+        note = (notes.get(mid, {}).get(latest) or {}).get("en") or "No market update written for this quarter yet."
         metros.append({
-            "id": mid, "en": m["name_en"], "zh": m["name_zh"],
+            "id": mid, "en": m["name_en"],
             "rent": arr("rent"), "vac": arr("vac"), "abs": arr("abs_q"), "del": dels,
             "inv": cur["inv"], "invPrev": prev_q.get("inv", cur["inv"]),
             "uc": cur["uc"], "ucPrev": prev_q.get("uc", cur["uc"]),
